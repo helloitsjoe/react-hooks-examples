@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import AppWithState from './useState';
-import AppWithContainer from './useState-container';
-import AppWithReducer from './useReducer';
-import AppWithEffect from './useEffect';
+// import App from './App';
+// import AppWithState from './useState';
+// import AppWithContainer from './useState-container';
+// import AppWithReducer from './useReducer';
+// import AppWithEffect from './useEffect';
 import AppWithEffectReducer from './useEffectReducer';
 import * as serviceWorker from './serviceWorker';
 

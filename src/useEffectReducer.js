@@ -1,22 +1,36 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useLayoutEffect, useReducer } from 'react';
+import './App.css';
+
+const placeMap = {
+  'Paris': [
+    'Ate a baguette',
+    'Said "merci" a lot',
+    'Wore a beret',
+    'Ate a croissant',
+    'Changed diapers'
+  ],
+  'Rome': [
+    'Ate a pizza',
+    'Ate gelato every day',
+    'Fought a gladiator',
+    'Said "grazie" a lot',
+    'Changed diapers'
+  ],
+  'Boston': [
+    'Ate a lobster roll',
+    'Did not say "cah"',
+    'Went to Harvard Yard',
+    'Changed diapers',
+    'Rode a Swan Boat'
+  ]
+}
+
+function getRandomPlace() {
+  const places = Object.keys(placeMap); 
+  return places[Math.floor(Math.random() * places.length)];
+}
 
 function fakeFetch(place) {
-  const placeMap = {
-    'Paris': [
-      'Ate a baguette',
-      'Said "merci" a lot',
-      'Wore a beret',
-      'Ate a croissant',
-      'Changed diapers'
-    ],
-    'Rome': [
-      'Ate a pizza',
-      'Ate gelato every day',
-      'Fought a gladiator',
-      'Said "grazie" a lot',
-      'Changed diapers'
-    ]
-  }
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (Math.random() > 0.8) {
@@ -29,6 +43,13 @@ function fakeFetch(place) {
 }
 
 function useFetch() {
+  const initialState = {
+    loading: true,
+    error: null,
+    data: [],
+    place: 'Paris'
+  }
+
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case 'FETCH_START': return {
@@ -52,35 +73,30 @@ function useFetch() {
       }
       case 'CHANGE_PLACE': return {
         ...state,
-        place: state.place === 'Paris' ? 'Rome' : 'Paris'
+        place: getRandomPlace()
       }
       default: return state
     }
-  }, {
-    loading: true,
-    error: null,
-    data: [],
-    place: 'Paris'
-  });
+  }, initialState);
   
-  const { loading, error, data, place } = state;
-
-  useEffect(() => {
+  // useLayoutEffect to avoid a flash
+  useLayoutEffect(() => {
     dispatch({ type: 'FETCH_START' });
-    fakeFetch(place)
+    fakeFetch(state.place)
       .then(data => {
         dispatch({ type: 'FETCH_SUCCESS', data });
       })
       .catch(error => {
         dispatch({ type: 'FETCH_FAILURE', error });
       });
-  }, [place]);
+  }, [state.place]);
 
+  const { loading, error, data, place } = state;
   return { data, loading, error, place, dispatch };
 }
 
-export default function App() {
-  const { data, loading, error, place, dispatch } = useFetch();
+export default function App({ injectedUseFetch = useFetch }) {
+  const { data, loading, error, place, dispatch } = injectedUseFetch();
 
   if (loading) return <h1>Loading...</h1>
   if (error) return <h1 style={{color: 'red'}}>Error! {error}</h1>
