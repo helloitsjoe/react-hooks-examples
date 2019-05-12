@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import './App.css';
 
 const LOW_END = -100;
 const HIGH_END = 100;
