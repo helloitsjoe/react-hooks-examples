@@ -25,12 +25,14 @@ const placeMap = {
   ]
 }
 
-function getRandomPlace() {
-  const places = Object.keys(placeMap); 
-  return places[Math.floor(Math.random() * places.length)];
+function getRandom(items, currItem) {
+  const item = items[Math.floor(Math.random() * items.length)];
+  console.log(item, currItem)
+  if (item === currItem) return getRandom(items, currItem);
+  return item;
 }
 
-function fakeFetch(place) {
+function fakeFetch(place, ms = 500) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (Math.random() > 0.8) {
@@ -38,7 +40,7 @@ function fakeFetch(place) {
       }
 
       resolve(placeMap[place]);
-    }, 500);
+    }, ms);
   });
 }
 
@@ -47,7 +49,8 @@ function useFetch() {
     loading: true,
     error: null,
     data: [],
-    place: 'Paris'
+    place: getRandom(Object.keys(placeMap)),
+    thing: ''
   }
 
   const [state, dispatch] = useReducer((state, action) => {
@@ -61,7 +64,8 @@ function useFetch() {
         ...state,
         loading: false,
         error: null,
-        data: action.data
+        data: action.data,
+        thing: getRandom(action.data)
       }
       case 'FETCH_FAILURE': return {
         ...state,
@@ -69,11 +73,12 @@ function useFetch() {
         error: action.error
       }
       case 'NEW_THING': return {
-        ...state
+        ...state,
+        thing: getRandom(state.data, state.thing)
       }
       case 'CHANGE_PLACE': return {
         ...state,
-        place: getRandomPlace()
+        place: getRandom(Object.keys(placeMap), state.place)
       }
       default: return state
     }
@@ -91,22 +96,20 @@ function useFetch() {
       });
   }, [state.place]);
 
-  const { loading, error, data, place } = state;
-  return { data, loading, error, place, dispatch };
+  const { loading, error, place, thing } = state;
+  return { loading, error, place, thing, dispatch };
 }
 
-export default function App({ injectedUseFetch = useFetch }) {
-  const { data, loading, error, place, dispatch } = injectedUseFetch();
+export default function App() {
+  const { loading, error, place, thing, dispatch } = useFetch();
 
   if (loading) return <h1>Loading...</h1>
   if (error) return <h1 style={{color: 'red'}}>Error! {error}</h1>
-
-  const randomThing = data[Math.floor(Math.random() * data.length)];
   
   return (
     <div className="App">
-      <h1>Things I did on my {place} vacation:</h1>
-      <h2>{randomThing}</h2>
+      <h1 data-testid="vacation-title" >Things I did on my {place} vacation:</h1>
+      <h2>{thing}</h2>
       <button onClick={() => dispatch({ type: 'NEW_THING' })}>What else?</button>
       <button onClick={() => dispatch({ type: 'CHANGE_PLACE' })}>Where else?</button>
     </div>
