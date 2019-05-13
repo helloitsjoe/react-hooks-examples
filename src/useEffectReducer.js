@@ -1,48 +1,6 @@
 import React, { useLayoutEffect, useReducer } from 'react';
+import { fetchData, placeMap, getRandom } from './services';
 import './App.css';
-
-const placeMap = {
-  'Paris': [
-    'Ate a baguette',
-    'Said "merci" a lot',
-    'Wore a beret',
-    'Ate a croissant',
-    'Changed diapers'
-  ],
-  'Rome': [
-    'Ate a pizza',
-    'Ate gelato every day',
-    'Fought a gladiator',
-    'Said "grazie" a lot',
-    'Changed diapers'
-  ],
-  'Boston': [
-    'Ate a lobster roll',
-    'Did not say "cah"',
-    'Went to Harvard Yard',
-    'Changed diapers',
-    'Rode a Swan Boat'
-  ]
-}
-
-function getRandom(items, currItem) {
-  const item = items[Math.floor(Math.random() * items.length)];
-  console.log(item, currItem)
-  if (item === currItem) return getRandom(items, currItem);
-  return item;
-}
-
-function fakeFetch(place, ms = 500) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (Math.random() > 0.8) {
-        return reject('Something went wrong!');
-      }
-
-      resolve(placeMap[place]);
-    }, ms);
-  });
-}
 
 function useFetch() {
   const initialState = {
@@ -87,7 +45,7 @@ function useFetch() {
   // useLayoutEffect to avoid a flash
   useLayoutEffect(() => {
     dispatch({ type: 'FETCH_START' });
-    fakeFetch(state.place)
+    fetchData(state.place)
       .then(data => {
         dispatch({ type: 'FETCH_SUCCESS', data });
       })
@@ -100,11 +58,18 @@ function useFetch() {
   return { loading, error, place, thing, dispatch };
 }
 
+const Fallback = ({ loading, error }) => (
+  <div data-testid="fallback" className="App">
+    {loading ? <h1>Loading...</h1> : <h1 style={{color: 'red'}}>Error! {error}</h1>}
+  </div>
+);
+
 export default function App() {
   const { loading, error, place, thing, dispatch } = useFetch();
-
-  if (loading) return <h1>Loading...</h1>
-  if (error) return <h1 style={{color: 'red'}}>Error! {error}</h1>
+ 
+  if (loading || error) {
+    return <Fallback loading={loading} error={error} />
+  }
   
   return (
     <div className="App">

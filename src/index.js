@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // import App from './App';
-// import AppWithState from './useState';
-// import AppWithContainer from './useState-container';
-// import AppWithReducer from './useReducer';
-// import AppWithEffect from './useEffect';
-import AppWithEffectReducer from './useEffectReducer';
+// import App from './useState';
+// import App from './useState-container';
+// import App from './useReducer';
+// import App from './useEffect';
+// import App from './useEffectReducer';
+import App from './useContext';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<AppWithEffectReducer />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

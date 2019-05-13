@@ -1,22 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./useEffectReducer";
+import { fetchData } from './services';
 import { render, cleanup, waitForElement } from "react-testing-library";
 
-it("testing hooks", () => {
-  // Mount app, expect loading screen
+jest.mock('./services');
+
+afterEach(cleanup);
+
+it("Loads vacation header", async () => {
+  fetchData.mockResolvedValue([]);
+  
+  const { getByText, getByTestId, container, debug } = render(<App />);
+  expect(getByTestId("fallback").textContent).toBe('Loading...');
+
+  await waitForElement(() => getByTestId('vacation-title'))
+  expect(getByTestId('vacation-title').textContent).toMatch('vacation');
+});
+
+it('displays error', async () => {
+  fetchData.mockRejectedValue('Nope');
+
   const { getByText, getByTestId } = render(<App />);
-  expect(getByText("Loading...")).toMatchInlineSnapshot(`
-    <h1>
-      Loading...
-    </h1>
-  `);
-  // After loading, expect title, newthing, buttons
-  console.log('one');
-  return waitForElement(() => {
-    getByTestId('vacation-title');
-  }).then(() => {
-    console.log('two');
-    expect(getByTextId('vacation-title')).toHaveTextContent('Paris');
-  });
+
+  await waitForElement(() => getByTestId('fallback'))
+  expect(getByTestId('fallback').textContent).toMatch('Error');
 });

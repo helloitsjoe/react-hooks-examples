@@ -1,55 +1,52 @@
-import React, { useState, useEffect } from 'react';
-
-function fakeFetch() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (Math.random() > 0.8) {
-        return reject('Something went wrong!');
-      }
-
-      resolve([
-        'Ate a baguette',
-        'Wore a baret',
-        'Changed diapers'
-      ]);
-    }, 1000);
-  });
-}
+import React, { useState, useLayoutEffect } from 'react';
+import { fetchData, placeMap, getRandom } from './services';
+import './App.css';
 
 function useFetch() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
+  const [place, setPlace] = useState(getRandom(Object.keys(placeMap)));
+  const [thing, setThing] = useState('');
 
-  useEffect(() => {
+  const setRandomThing = () => setThing(getRandom(data, thing));
+  const setRandomPlace = () => setPlace(getRandom(Object.keys(placeMap)));
+
+  useLayoutEffect(() => {
     setLoading(true);
     setError(false);
-    fakeFetch()
+    fetchData(place)
       .then(data => {
         setData(data);
+        setThing(getRandom(data));
         setLoading(false);
       })
       .catch(err => {
         setError(err);
         setLoading(false);
       });
-  }, []);
+  }, [place]);
 
-  return { data, loading, error };
+  return { loading, error, place, thing, setRandomPlace, setRandomThing };
 }
 
-export default function App() {
-  const { data, loading, error } = useFetch();
-  
-  if (loading) return <h1>Loading...</h1>
-  if (error) return <h1 style={{color: 'red'}}>Error! {error}</h1>
+const Fallback = ({ loading, error }) => (
+  <div className="App">
+    {loading ? <h1>Loading...</h1> : <h1 style={{color: 'red'}}>Error! {error}</h1>}
+  </div>
+);
 
+export default function App() {
+  const { loading, error, place, thing, setRandomThing, setRandomPlace } = useFetch();
+
+  if (loading || error) return <Fallback loading={loading} error={error} />
+  
   return (
     <div className="App">
-      <h1>Things I did on vacation:</h1>
-      <ul>
-        {data.map(thing => <li key={thing} >{thing}</li>)}
-      </ul>
+      <h1>Things I did on my {place} vacation:</h1>
+      <h2>{thing}</h2>
+      <button onClick={setRandomThing}>What else?</button>
+      <button onClick={setRandomPlace}>Where else?</button>
     </div>
   );
 }
