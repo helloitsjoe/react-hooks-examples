@@ -1,3 +1,7 @@
+body, button {
+  font-family: 'Montserrat';
+}
+
 .App {
   text-align: center;
 }
@@ -32,6 +36,21 @@
   font-weight: bold;
   background-color: tomato;
   border: none;
+}
+
+button {
+  border: none;
+  border-radius: 2px;
+  font-weight: bold;
+  background-color: cornflowerblue;
+  color: white;
+  margin: 5px;
+  padding: 0 10px;
+  font-size: 18px;
+}
+
+.increment-decrement {
+  font-size: 36px;
 }
 
 @keyframes App-logo-spin {

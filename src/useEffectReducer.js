@@ -73,7 +73,7 @@ export default function App() {
   
   return (
     <div className="App">
-      <h1 data-testid="vacation-title" >Things I did on my {place} vacation:</h1>
+      <h1>What I did on my <span style={{color: 'purple' }}>{place}</span> vacation:</h1>
       <h2>{thing}</h2>
       <button onClick={() => dispatch({ type: 'NEW_THING' })}>What else?</button>
       <button onClick={() => dispatch({ type: 'CHANGE_PLACE' })}>Where else?</button>

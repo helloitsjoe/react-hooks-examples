@@ -43,7 +43,7 @@ export default function App() {
   
   return (
     <div className="App">
-      <h1>Things I did on my {place} vacation:</h1>
+      <h1>What I did on my <span style={{color: 'purple' }}>{place}</span> vacation:</h1>
       <h2>{thing}</h2>
       <button onClick={setRandomThing}>What else?</button>
       <button onClick={setRandomPlace}>Where else?</button>
