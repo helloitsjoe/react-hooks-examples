@@ -6,8 +6,8 @@ function useFetch() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
-  const [place, setPlace] = useState(getRandom(Object.keys(placeMap)));
   const [thing, setThing] = useState('');
+  const [place, setPlace] = useState(getRandom(Object.keys(placeMap)));
 
   const setRandomThing = () => setThing(getRandom(data, thing));
   const setRandomPlace = () => setPlace(getRandom(Object.keys(placeMap)));

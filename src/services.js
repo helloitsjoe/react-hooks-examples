@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const placeMap = {
   'Paris': [
     'Ate a baguette',
@@ -19,6 +21,13 @@ export const placeMap = {
     'Went to Harvard Yard',
     'Changed diapers',
     'Rode a Swan Boat'
+  ],
+  'Tokyo': [
+    'Ate a tuna roll',
+    'Said "arigato" a lot',
+    'Ate a mochi',
+    'Did not watch anime',
+    'Changed diapers'
   ]
 }
 
@@ -39,4 +48,10 @@ export function getRandom(items, currItem) {
   if (item === currItem) return getRandom(items, currItem);
   return item;
 }
+
+export const Fallback = ({ loading, error }) => (
+  <div className="App">
+    {loading ? <h1>Loading...</h1> : <h1 style={{color: 'red'}}>Error! {error}</h1>}
+  </div>
+);
 
