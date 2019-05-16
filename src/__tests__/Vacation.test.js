@@ -1,9 +1,9 @@
 import React from 'react';
-import App from './03-Vacation';
-import { fetchData } from './utils';
 import { render, cleanup, waitForElement } from 'react-testing-library';
+import App from '../03-Vacation';
+import { fetchData } from '../utils';
 
-jest.mock('./utils');
+jest.mock('../utils');
 
 afterEach(cleanup);
 
