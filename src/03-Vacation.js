@@ -1,6 +1,5 @@
 import React from 'react';
 import useFetch from './useFetch';
-
 import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
