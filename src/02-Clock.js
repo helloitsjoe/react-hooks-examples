@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-// Hooks-based implementation - see class below for reference
+// HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 function Clock() {
   const [elapsed, setElapsed] = useState(0);
   const [five, setFive] = useState(false);
@@ -36,7 +36,7 @@ function Clock() {
   );
 }
 
-// Class-based implementation
+// CLASS-BASED IMPLEMENTATION
 
 // class Clock extends React.Component {
 //   state = {

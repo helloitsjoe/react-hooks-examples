@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 
-// Hooks-based implementation - see class below for reference
+// HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 export default function Counter() {
   const [count, setCount] = useState(0);
   const [step, setStep] = useState(1);
@@ -27,8 +27,10 @@ export default function Counter() {
   );
 }
 
-// Naive useState hook implementation
+////////////////////////////////////////////
+// NAIVE `useState` HOOK IMPLEMENTATION
 // (comment out the `useState` import and uncomment this to see it in action)
+
 // const statesArray = [];
 // let useStateCallIndex = -1;
 
@@ -60,8 +62,8 @@ export default function Counter() {
 
 // render();
 
-//////////////////////////////
-// Class-based implementation
+////////////////////////////////////////////
+// CLASS-BASED IMPLEMENTATION
 
 // export default class Counter extends React.Component {
 //   state = {
