@@ -12,7 +12,7 @@ An example using `useEffect` with `setInterval`, showing how `componentDidMount`
 
 ### `03-Vacation.js`
 
-## A data fetching example with a custom hook `useFetch`, with 2 implementations - one using `useState`, and one with `useReducer`
+A data fetching example with a custom hook `useFetch`, with 2 implementations - one using `useState`, and one with `useReducer`
 
 ---
 
