@@ -8,9 +8,11 @@ import './index.css';
 // import App from './useEffect';
 // import App from './useEffectReducer';
 // import App from './useContext';
-// import App from './useEffectClock';
-import App from './Vacation';
-// import App from './Counter';
+
+// import App from './Clock';
+// import App from './Vacation';
+import App from './Counter';
+
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));

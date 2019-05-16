@@ -1,40 +1,40 @@
 import React from 'react';
 
 export const placeMap = {
-  'Paris': [
+  Paris: [
     'Ate a baguette',
     'Said "merci" a lot',
     'Wore a beret',
     'Ate a croissant',
-    'Changed diapers'
+    'Changed diapers',
   ],
-  'Rome': [
+  Rome: [
     'Ate a pizza',
     'Ate gelato every day',
     'Fought a gladiator',
     'Said "grazie" a lot',
-    'Changed diapers'
+    'Changed diapers',
   ],
-  'Boston': [
+  Boston: [
     'Ate a lobster roll',
     'Did not say "cah"',
     'Went to Harvard Yard',
     'Changed diapers',
-    'Rode a Swan Boat'
+    'Rode a Swan Boat',
   ],
-  'Tokyo': [
+  Tokyo: [
     'Ate a tuna roll',
     'Said "arigato" a lot',
     'Ate a mochi',
     'Did not watch anime',
-    'Changed diapers'
-  ]
-}
+    'Changed diapers',
+  ],
+};
 
 export function fetchData(place, ms = 500) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (Math.random() > 0.8) {
+      if (Math.random() < 0.1) {
         return reject('Something went wrong!');
       }
 
@@ -51,7 +51,10 @@ export function getRandom(items, currItem) {
 
 export const Fallback = ({ loading, error }) => (
   <div className="App">
-    {loading ? <h1>Loading...</h1> : <h1 style={{color: 'red'}}>Error! {error}</h1>}
+    {loading ? (
+      <h1>Loading...</h1>
+    ) : (
+      <h1 style={{ color: 'red' }}>Error! {error}</h1>
+    )}
   </div>
 );
-

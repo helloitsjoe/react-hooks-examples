@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 
 export default class Counter extends React.Component {
@@ -29,22 +30,34 @@ export default class Counter extends React.Component {
   }
 }
 
-//export default function Counter() {
-//  const [count, setCount] = useState(0);
-//  const [step, setStep] = useState(1);
-//
-//  return (
-//    <div className="App">
-//      <h1>Current count:</h1>
-//      <h1>{count}</h1>
-//      <button onClick={() => setCount(c => c + step)}>+</button>
-//      <button onClick={() => setCount(c => c - step)}>-</button>
-//      <div>
-//        <h2>Current step: {step}</h2>
-//        <button onClick={() => setStep(s => s + 1)}>Step +</button>
-//        <button onClick={() => setStep(s => s - 1)}>Step -</button>
-//      </div>
-//    </div>
-//  );
-//}
-//
+////////////////////////////////////////
+
+// Implementing our own hooks:
+
+// const states = [];
+// let calls = -1;
+
+// function useState(defaultValue) {
+//   const callId = ++calls;
+//   const existing = states[callId];
+
+//   if (existing) {
+//     return existing;
+//   }
+
+//   function setValue(newValue) {
+//     states[callId][0] = newValue;
+//     render();
+//   }
+
+//   const state = [defaultValue, setValue];
+//   states[callId] = state;
+//   return state;
+// }
+
+// function render() {
+//   calls = -1;
+//   ReactDOM.render(<Counter />, document.getElementById('root'));
+// }
+
+// render();
