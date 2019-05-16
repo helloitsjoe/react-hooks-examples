@@ -1,3 +1,26 @@
+# React Hooks Examples
+
+A few simple examples showing the difference between hooks-based functional components and class components.
+
+### `01-Counter.js`
+
+A simple counter, also has a naive hooks implementation to show approximately how `useState` works
+
+### `02-Clock.js`
+
+An example using `useEffect` with `setInterval`, showing how `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` can all be wrapped into a single `useEffect`
+
+### `03-Vacation.js`
+
+## A data fetching example with a custom hook `useFetch`, with 2 implementations - one using `useState`, and one with `useReducer`
+
+---
+
+- `npm start` will run `Counter` by default
+- To see the `Clock` or `Vacation`, just swap them out in `index.js`
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

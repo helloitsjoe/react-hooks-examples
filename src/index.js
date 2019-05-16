@@ -1,23 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-// import App from './App';
-// import App from './useState';
-// import App from './useState-container';
-// import App from './useReducer';
-// import App from './useEffect';
-// import App from './useEffectReducer';
-// import App from './useContext';
 
-// import App from './Clock';
-// import App from './Vacation';
-import App from './Counter';
-
-import * as serviceWorker from './serviceWorker';
+// import App from './01-Counter';
+import App from './02-Clock';
+// import App from './03-Vacation';
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

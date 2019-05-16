@@ -1,4 +1,0 @@
-- Can't use hooks in if blocks or for loops
-- Show hooks implementation
-- Custom hook
-- useMemo/useCallback
