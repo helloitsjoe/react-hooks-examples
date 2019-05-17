@@ -3,35 +3,40 @@ import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 function Clock() {
-  const [elapsed, setElapsed] = useState(0);
-  const [five, setFive] = useState(false);
+  const [count, setCount] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     // This setInterval gets cleaned up and recreated every time useEffect runs
     // (console log `interval` to see the ID changing on every update)
     const interval = setInterval(() => {
-      setElapsed(e => e + 1);
-    }, 500);
+      setCount(e => e + 1);
+    }, 100);
 
-    setFive(elapsed % 5 ? false : true);
+    if (paused) {
+      clearInterval(interval);
+    }
 
     // The function returned from `useEffect` gets called before unmount
     // (in fact, it gets called every time useEffect is called, which you
-    // can see by putting a console log in here)
+    // can see by putting a console log in here). To see why we need to
+    // clear the interval in unmount, comment out this function.
     return () => {
       clearInterval(interval);
     };
 
-    // Adding `elapsed` to deps array makes this useEffect function like
-    // componentDidUpdate. With an empty array, it would be closer to
-    // componentDidMount
-  }, [elapsed]);
+    // Adding `paused` to deps array makes this useEffect act like
+    // componentDidUpdate - it will update every time any values
+    // in the array change. With an empty array, it would act like
+    // componentDidMount, only getting called once on mount.
+  }, [paused]);
 
   return (
     <div className="App">
-      <h2>Elapsed:</h2>
-      <h1>{elapsed}</h1>
-      {five && <h4>Five!</h4>}
+      <h2>Count:</h2>
+      <h1>{count}</h1>
+      <button onClick={() => setPaused(!paused)}>{paused ? 'Resume' : 'Pause'}</button>
+      <button onClick={() => setCount(0)}>Reset</button>
     </div>
   );
 }
@@ -40,7 +45,7 @@ function Clock() {
 
 // class Clock extends React.Component {
 //   state = {
-//     elapsed: 0,
+//     count: 0,
 //     five: false,
 //   };
 
@@ -48,14 +53,14 @@ function Clock() {
 
 //   componentDidMount() {
 //     this.interval = setInterval(() => {
-//       this.setState(prevState => ({ elapsed: prevState.elapsed + 1 }));
+//       this.setState(prevState => ({ count: prevState.count + 1 }));
 //     }, 500);
 //   }
 
 //   componentDidUpdate(prevProps, prevState) {
-//     if (prevState.elapsed === this.state.elapsed) return;
+//     if (prevState.count === this.state.count) return;
 //     this.setState(prevState => {
-//       if (prevState.elapsed % 5) return { five: false };
+//       if (prevState.count % 5) return { five: false };
 //       return { five: true };
 //     });
 //   }
@@ -67,8 +72,8 @@ function Clock() {
 //   render() {
 //     return (
 //       <div className="App">
-//         <h2>Elapsed:</h2>
-//         <h1>{this.state.elapsed}</h1>
+//         <h2>Count:</h2>
+//         <h1>{this.state.count}</h1>
 //         {this.state.five && <h4>Five!</h4>}
 //       </div>
 //     );
