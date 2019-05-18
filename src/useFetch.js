@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState, useReducer } from 'react';
 import { getRandom, fetchData, placeMap } from './utils';
 
-// Here are 2 different implementations of a custom hook that exposes the same API.
+// Here are 3 different implementations of a custom hook that exposes the same API.
 // Swap them with the default export at the bottom of the file.
 
 // Custom hook using useState to fetch data
@@ -34,6 +34,46 @@ function useFetchWithState() {
   return { loading, error, place, activity, setRandomActivity, setRandomPlace };
 }
 
+// Custom hook using useState to fetch data, storing all state in a single object.
+function useFetchWithSingleState() {
+  // Note: this is closer to how setState works in class components, but note that
+  // useState doesn't automatically merge with the existing state so you must do
+  // it manually. The React docs recommend either splitting state into variables
+  // that tend to change together, or using useReducer hook (see below).
+  // https://reactjs.org/docs/hooks-faq.html#should-i-use-one-or-many-state-variables
+  const initialState = {
+    loading: false,
+    error: false,
+    data: [],
+    activity: '',
+    place: getRandom(Object.keys(placeMap)),
+  };
+
+  const [state, setState] = useState(initialState);
+  const updateState = newState => setState(s => ({ ...s, ...newState }));
+
+  useLayoutEffect(() => {
+    updateState({ loading: true, error: false });
+    fetchData(state.place)
+      .then(data => {
+        updateState({
+          loading: false,
+          activity: getRandom(data),
+          data,
+        });
+      })
+      .catch(err => updateState({ loading: false, error: true }));
+  }, [state.place]);
+
+  const setRandomPlace = () =>
+    updateState({ place: getRandom(Object.keys(placeMap)) });
+  const setRandomActivity = () =>
+    updateState({ activity: getRandom(data, state.activity) });
+
+  const { data, ...rest } = state;
+  return { ...rest, setRandomActivity, setRandomPlace };
+}
+
 // Custom hook using useReducer to fetch data
 function useFetchWithReducer() {
   const initialState = {
@@ -41,7 +81,7 @@ function useFetchWithReducer() {
     error: false,
     data: [],
     activity: '',
-    place: getRandom(Object.keys(placeMap))
+    place: getRandom(Object.keys(placeMap)),
   };
 
   const [state, dispatch] = useReducer((state, action) => {
@@ -50,30 +90,30 @@ function useFetchWithReducer() {
         return {
           ...state,
           loading: true,
-          error: false
+          error: false,
         };
       case 'SUCCESS':
         return {
           ...state,
           loading: false,
           data: action.data,
-          activity: getRandom(action.data)
+          activity: getRandom(action.data),
         };
       case 'ERROR':
         return {
           ...state,
           loading: false,
-          error: true
+          error: true,
         };
       case 'NEW_ACTIVITY':
         return {
           ...state,
-          activity: getRandom(state.data, state.activity)
+          activity: getRandom(state.data, state.activity),
         };
       case 'NEW_PLACE':
         return {
           ...state,
-          place: getRandom(Object.keys(placeMap), state.place)
+          place: getRandom(Object.keys(placeMap), state.place),
         };
       default:
         return state;
@@ -93,10 +133,10 @@ function useFetchWithReducer() {
 
   const setRandomPlace = () => dispatch({ type: 'NEW_PLACE' });
   const setRandomActivity = () => dispatch({ type: 'NEW_ACTIVITY' });
-  const { loading, error, place, activity } = state;
-
-  return { loading, error, place, activity, setRandomActivity, setRandomPlace };
+  const { data, ...rest } = state;
+  return { ...rest, setRandomActivity, setRandomPlace };
 }
 
 export default useFetchWithState;
 // export default useFetchWithReducer;
+// export default useFetchWithSingleState;
