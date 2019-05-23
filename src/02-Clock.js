@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
-function Clock() {
+function MountedClock() {
   const [count, setCount] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -81,7 +81,7 @@ function Clock() {
 // }
 
 // Notice that we can use hooks and classes together
-export default class App extends React.Component {
+export default class Clock extends React.Component {
   state = {
     mounted: false
   };
@@ -92,7 +92,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <button onClick={this.toggleMount}>Mount/Unmount</button>
-        {this.state.mounted && <Clock />}
+        {this.state.mounted && <MountedClock />}
       </div>
     );
   }
