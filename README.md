@@ -16,8 +16,9 @@ A data fetching example with a custom hook `useFetch`, with 2 implementations - 
 
 ---
 
-- `npm start` will run `Counter` by default
-- To see the `Clock` or `Vacation`, just swap them out in `index.js`
+### See the examples at [https://helloitsjoe.github.io/react-hooks-examples](https://helloitsjoe.github.io/react-hooks-examples)
+
+To edit these examples, `npm start` will run a development server with hot reloading. 
 
 ---
 
