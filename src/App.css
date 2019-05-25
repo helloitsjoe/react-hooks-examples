@@ -1,0 +1,76 @@
+body, button {
+  font-family: 'Montserrat';
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App-counter-button {
+  padding: 5px 15px;
+  border-radius: 2px;
+  margin: 5px;
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  background-color: tomato;
+  border: none;
+}
+
+
+button {
+  border: none;
+  border-radius: 2px;
+  font-weight: bold;
+  background-color: cornflowerblue;
+  color: white;
+  margin: 5px;
+  padding: 0 10px;
+  font-size: 18px;
+}
+
+.global-button {
+  border: 1px solid purple;
+  background-color: white;
+  color: purple;
+}
+
+.global-button:disabled {
+  border: 1px solid purple;
+  background-color: purple;
+  color: white;
+}
+
+.increment-decrement {
+  font-size: 36px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
