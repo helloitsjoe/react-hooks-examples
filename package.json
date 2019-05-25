@@ -1,8 +1,8 @@
 {
-  "name": "hooks",
+  "name": "react-hooks-examples",
   "version": "0.1.0",
-  "private": true,
-  "homepage" : "https://helloitsjoe.github.io/react-hooks-examples",
+  "private": false,
+  "homepage" : "http://helloitsjoe.github.io/react-hooks-examples",
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
