@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 
@@ -16,12 +16,12 @@ export default function Counter() {
     <div className="App">
       <h1>Current count:</h1>
       <h1>{count}</h1>
-      <button onClick={increment}>+</button>
       <button onClick={decrement}>-</button>
+      <button onClick={increment}>+</button>
       <div>
         <h2>Current step: {step}</h2>
-        <button onClick={incrementStep}>Step +</button>
         <button onClick={decrementStep}>Step -</button>
+        <button onClick={incrementStep}>Step +</button>
       </div>
     </div>
   );

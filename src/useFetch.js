@@ -28,7 +28,7 @@ function useFetchWithState() {
       });
   }, [place]);
 
-  const setRandomPlace = () => setPlace(Object.keys(placeMap));
+  const setRandomPlace = () => setPlace(getRandom(Object.keys(placeMap)));
   const setRandomActivity = () => setActivity(getRandom(data, activity));
 
   return { loading, error, place, activity, setRandomActivity, setRandomPlace };

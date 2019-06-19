@@ -6,36 +6,29 @@ import './App.css';
 
 const AppContext = React.createContext();
 
-const componentMap = {
-  Counter,
-  Clock,
-  Vacation
-}
-
 function Button({ app }) {
   const { current, setCurrent } = useContext(AppContext);
   return (
     <button
       className="global-button"
-      disabled={current === app}
-      onClick={() => setCurrent(app)}
+      disabled={current.app === app}
+      onClick={() => setCurrent({ app })}
     >
-      {app}
+      {app.name}
     </button>
   );
 }
 
 export default function App() {
-  const [current, setCurrent] = useState('Counter');
-  const Component = componentMap[current];
+  const [current, setCurrent] = useState({ app: Counter });
 
   return (
     <AppContext.Provider value={{ current, setCurrent }}>
       <div className="App">
-        <Button app={'Counter'} />
-        <Button app={'Clock'} />
-        <Button app={'Vacation'} />
-        <Component />
+        <Button app={Counter} current={current} />
+        <Button app={Clock} current={current} />
+        <Button app={Vacation} current={current} />
+        <current.app />
       </div>
     </AppContext.Provider>
   );
