@@ -15,7 +15,7 @@ function Button({ app }) {
       disabled={current.app === app}
       onClick={() => setCurrent({ app })}
     >
-      {app.name}
+      {app.displayName}
     </button>
   );
 }
