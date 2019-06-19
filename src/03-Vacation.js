@@ -10,7 +10,7 @@ export default function Vacation() {
     place,
     activity,
     setRandomActivity,
-    setRandomPlace
+    setRandomPlace,
   } = useFetch();
 
   if (loading || error) return <Fallback loading={loading} error={error} />;
@@ -27,6 +27,8 @@ export default function Vacation() {
     </div>
   );
 }
+
+Vacation.displayName = 'Vacation';
 
 // CLASS-BASED IMPLEMENTATION
 

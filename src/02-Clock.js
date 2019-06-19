@@ -35,7 +35,9 @@ function MountedClock() {
     <div className="App">
       <h2>Count:</h2>
       <h1>{count}</h1>
-      <button onClick={() => setPaused(!paused)}>{paused ? 'Resume' : 'Pause'}</button>
+      <button onClick={() => setPaused(!paused)}>
+        {paused ? 'Resume' : 'Pause'}
+      </button>
       <button onClick={() => setCount(0)}>Reset</button>
     </div>
   );
@@ -83,7 +85,7 @@ function MountedClock() {
 // Notice that we can use hooks and classes together
 export default class Clock extends React.Component {
   state = {
-    mounted: false
+    mounted: false,
   };
 
   toggleMount = () => this.setState(p => ({ mounted: !p.mounted }));
@@ -97,3 +99,5 @@ export default class Clock extends React.Component {
     );
   }
 }
+
+Clock.displayName = 'Clock';

@@ -27,6 +27,8 @@ export default function Counter() {
   );
 }
 
+Counter.displayName = 'Counter';
+
 ////////////////////////////////////////////
 // NAIVE `useState` HOOK IMPLEMENTATION
 // (comment out the `useState` import and uncomment this to see it in action)
