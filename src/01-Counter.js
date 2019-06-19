@@ -68,6 +68,8 @@ Counter.displayName = 'Counter';
 // CLASS-BASED IMPLEMENTATION
 
 // export default class Counter extends React.Component {
+//   static displayName = 'Counter';
+
 //   state = {
 //     count: 0,
 //     step: 1

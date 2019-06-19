@@ -11,7 +11,7 @@ function MountedClock() {
     // (console log `interval` to see the ID changing on every update)
     const interval = setInterval(() => {
       setCount(e => e + 1);
-    }, 100);
+    }, 250);
 
     if (paused) {
       clearInterval(interval);
@@ -45,25 +45,31 @@ function MountedClock() {
 
 // CLASS-BASED IMPLEMENTATION
 
-// class Clock extends React.Component {
+// class MountedClock extends React.Component {
 //   state = {
 //     count: 0,
-//     five: false,
+//     paused: false,
 //   };
 
 //   interval = null;
 
-//   componentDidMount() {
-//     this.interval = setInterval(() => {
+//   startCount = () =>
+//     setInterval(() => {
 //       this.setState(prevState => ({ count: prevState.count + 1 }));
-//     }, 500);
+//     }, 250);
+
+//   componentDidMount() {
+//     this.interval = this.startCount();
 //   }
 
 //   componentDidUpdate(prevProps, prevState) {
-//     if (prevState.count === this.state.count) return;
+//     if (prevState.paused === this.state.paused) return;
 //     this.setState(prevState => {
-//       if (prevState.count % 5) return { five: false };
-//       return { five: true };
+//       if (this.state.paused) {
+//         clearInterval(this.interval);
+//       } else {
+//         this.interval = this.startCount();
+//       }
 //     });
 //   }
 
@@ -76,7 +82,16 @@ function MountedClock() {
 //       <div className="App">
 //         <h2>Count:</h2>
 //         <h1>{this.state.count}</h1>
-//         {this.state.five && <h4>Five!</h4>}
+//         <button
+//           onClick={() =>
+//             this.setState(prev => ({
+//               paused: !prev.paused,
+//             }))
+//           }
+//         >
+//           {this.state.paused ? 'Resume' : 'Pause'}
+//         </button>
+//         <button onClick={() => this.setState({ count: 0 })}>Reset</button>
 //       </div>
 //     );
 //   }
