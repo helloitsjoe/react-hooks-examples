@@ -21,7 +21,7 @@ function Button({ app }) {
 }
 
 export default function App() {
-  const [current, setCurrent] = useState({ app: Clock });
+  const [current, setCurrent] = useState({ app: Counter });
 
   return (
     <AppContext.Provider value={{ current, setCurrent }}>

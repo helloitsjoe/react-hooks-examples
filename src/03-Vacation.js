@@ -32,7 +32,11 @@ Vacation.displayName = 'Vacation';
 
 // CLASS-BASED IMPLEMENTATION
 
+// import { getRandom, fetchData, placeMap } from './utils';
+
 // export default class Vacation extends React.Component {
+//   static displayName = 'Vacation';
+
 //   state = {
 //     loading: false,
 //     error: false,
