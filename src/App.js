@@ -8,7 +8,7 @@ const AppContext = React.createContext();
 
 function Button({ app }) {
   const { current, setCurrent } = useContext(AppContext);
-  console.log(`app.displayName:`, app.displayName);
+
   return (
     <button
       className="global-button"
