@@ -14,18 +14,31 @@ function useFetchWithState() {
 
   // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
+    let isCurrent = true;
+    
     setLoading(true);
     setError(false);
     fetchData(place)
       .then(data => {
+        if (!isCurrent) return;
+      
         setLoading(false);
         setActivity(getRandom(data));
         setData(data);
       })
       .catch(err => {
+        if (!isCurrent) return;
+      
         setLoading(false);
         setError(true);
       });
+
+    // This prevents setting state on an unmounted component. To see the failure,
+    // comment out this return function, then in the browser: open dev tools, fetch
+    // data and switch to another example (e.g. Clock) while the data is still loading.
+    return () => {
+      isCurrent = false;
+    }
   }, [place]);
 
   const setRandomPlace = () => setPlace(getRandom(Object.keys(placeMap)));
