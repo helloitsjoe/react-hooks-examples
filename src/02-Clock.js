@@ -20,7 +20,8 @@ function MountedClock() {
     // The function returned from `useEffect` gets called before unmount
     // (in fact, it gets called every time useEffect is called, which you
     // can see by putting a console log in here). To see why we need to
-    // clear the interval in unmount, comment out this function.
+    // clear the interval in unmount, comment out this function, start
+    // the clock, and then unmount it.
     return () => {
       clearInterval(interval);
     };
