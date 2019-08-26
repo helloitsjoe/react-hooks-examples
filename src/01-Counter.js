@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 export default function Counter() {
-  const [count, setCount] = useState(0);
-  const [step, setStep] = useState(1);
-
-  const increment = () => setCount(c => c + step);
-  const decrement = () => setCount(c => c - step);
-  const incrementStep = () => setStep(s => s + 1);
-  const decrementStep = () => setStep(s => s - 1);
+  let count, increment, decrement;
 
   return (
     <div className="App">
@@ -18,11 +12,6 @@ export default function Counter() {
       <h1 data-testid="count">{count}</h1>
       <button onClick={decrement}>-</button>
       <button onClick={increment}>+</button>
-      <div>
-        <h2>Current step: {step}</h2>
-        <button onClick={decrementStep}>Step -</button>
-        <button onClick={incrementStep}>Step +</button>
-      </div>
     </div>
   );
 }

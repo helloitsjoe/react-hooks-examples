@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useLayoutEffect, useReducer } from 'react';
+import React, { useRef, useState, useEffect, useLayoutEffect, useReducer } from 'react';
 import useFetch from './useFetch';
 import { fetchPhoto, getRandom } from './utils';
 import './App.css';
 
+// const { loading, error, imageData, input, handleChange, handleSubmit } = useFetch();
+
 // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
-  const { loading, error, imageData, input, handleChange, handleSubmit } = useFetch();
+  let loading, error, imageData, input, handleSubmit, handleChange;
 
   const alt = imageData && imageData.alt_description;
   const src = imageData && imageData.urls.small;
