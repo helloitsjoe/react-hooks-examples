@@ -7,7 +7,7 @@ import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
-  let loading, error, imageData, input, handleSubmit, handleChange;
+  let loading, error, imageData, input, query, handleSubmit, handleChange;
 
   if (loading || error) return <Fallback error={error} />;
 
@@ -16,6 +16,7 @@ export default function Vacation() {
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
+        {query && <h1>{query}!</h1>}
         {src ? (
           <a href={hotlink}>
             <img alt={alt} src={src} />
@@ -25,7 +26,7 @@ export default function Vacation() {
         )}
         <input
           className="Vacation-input"
-          placeholder="Where should we go?"
+          placeholder="Where should we go next?"
           onChange={handleChange}
           value={input}
         />
@@ -39,37 +40,34 @@ Vacation.displayName = 'Vacation';
 
 // CLASS-BASED IMPLEMENTATION
 
-// import { getRandom, fetchData, placeMap } from './utils';
-
 // export default class Vacation extends React.Component {
 //   static displayName = 'Vacation';
 
 //   state = {
 //     loading: false,
 //     error: false,
-//     data: [],
-//     activity: '',
-//     place: getRandom(Object.keys(placeMap)),
+//     imageData: null,
+//     input: '',
+//     query: 'Rome',
 //   };
 
 //   componentDidMount() {
-//     this.fetch(this.state.place);
+//     this.fetch(this.state.query);
 //   }
 
 //   componentDidUpdate(prevProps, prevState) {
-//     if (this.state.place !== prevState.place) {
-//       this.fetch(this.state.place);
+//     if (this.state.query !== prevState.query) {
+//       this.fetch(this.state.query);
 //     }
 //   }
 
-//   fetch = place => {
+//   fetch = query => {
 //     this.setState({ loading: true, error: false });
-//     fetchData(place)
+//     fetchPhoto(query)
 //       .then(data => {
 //         this.setState({
 //           loading: false,
-//           activity: getRandom(data),
-//           data,
+//           imageData: getRandom(data.results),
 //         });
 //       })
 //       .catch(err => {
@@ -77,30 +75,38 @@ Vacation.displayName = 'Vacation';
 //       });
 //   };
 
-//   setRandomActivity = () =>
-//     this.setState(state => ({
-//       activity: getRandom(state.data, state.activity),
-//     }));
+//   handleChange = e => this.setState({ input: e.target.value });
 
-//   setRandomPlace = () =>
-//     this.setState(state => ({
-//       place: getRandom(Object.keys(placeMap), state.place),
-//     }));
+//   handleSubmit = e => {
+//     e.preventDefault();
+//     this.setState(prev => ({ query: prev.input }));
+//   };
 
 //   render() {
-//     const { loading, error, activity, place } = this.state;
+//     const { loading, error, imageData, query, input } = this.state;
+//     const { alt, src, hotlink } = getImgAttrs(imageData);
 
-//     if (loading || error) return <Fallback loading={loading} error={error} />;
+//     if (loading || error) return <Fallback error={error} />;
 
 //     return (
 //       <div className="App">
-//         <h1>
-//           What I did on my <span style={{ color: 'purple' }}>{place}</span>{' '}
-//           vacation:
-//         </h1>
-//         <h2>{activity}</h2>
-//         <button onClick={this.setRandomActivity}>What else?</button>
-//         <button onClick={this.setRandomPlace}>Where else?</button>
+//         <form onSubmit={this.handleSubmit}>
+//           {query && <h1>{query}!</h1>}
+//           {src ? (
+//             <a href={hotlink}>
+//               <img alt={alt} src={src} />
+//             </a>
+//           ) : (
+//             <h2>Where would you like to go?</h2>
+//           )}
+//           <input
+//             className="Vacation-input"
+//             placeholder="Where should we go next?"
+//             onChange={this.handleChange}
+//             value={input}
+//           />
+//           <button type="submit">Search</button>
+//         </form>
 //       </div>
 //     );
 //   }
