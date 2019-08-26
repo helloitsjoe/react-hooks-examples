@@ -76,7 +76,7 @@ function MountedClock() {
 // Notice that we can use hooks and classes together
 export default class Clock extends React.Component {
   state = {
-    mounted: false,
+    mounted: true,
   };
 
   toggleMount = () => this.setState(p => ({ mounted: !p.mounted }));
