@@ -5,11 +5,7 @@ import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
-  // const { loading, error, imageData, input, handleChange, handleSubmit } = useFetch();
-  let imageData, loading, error, input;
-
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const { loading, error, imageData, input, handleChange, handleSubmit } = useFetch();
 
   const alt = imageData && imageData.alt_description;
   const src = imageData && imageData.urls.small;
