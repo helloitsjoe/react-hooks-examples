@@ -5,12 +5,9 @@ import './App.css';
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 export default function Counter() {
   const [count, setCount] = useState(0);
-  const [step, setStep] = useState(1);
 
-  const increment = () => setCount(c => c + step);
-  const decrement = () => setCount(c => c - step);
-  const incrementStep = () => setStep(s => s + 1);
-  const decrementStep = () => setStep(s => s - 1);
+  const increment = () => setCount(c => c + 1);
+  const decrement = () => setCount(c => c - 1);
 
   return (
     <div className="App">
@@ -18,11 +15,6 @@ export default function Counter() {
       <h1 data-testid="count">{count}</h1>
       <button onClick={decrement}>-</button>
       <button onClick={increment}>+</button>
-      <div>
-        <h2>Current step: {step}</h2>
-        <button onClick={decrementStep}>Step -</button>
-        <button onClick={incrementStep}>Step +</button>
-      </div>
     </div>
   );
 }
@@ -72,13 +64,10 @@ Counter.displayName = 'Counter';
 
 //   state = {
 //     count: 0,
-//     step: 1
 //   };
 
-//   increment = () => this.setState(prev => ({ count: prev.count + prev.step }));
-//   decrement = () => this.setState(prev => ({ count: prev.count - prev.step }));
-//   incrementStep = () => this.setState(prev => ({ step: prev.step + 1 }));
-//   decrementStep = () => this.setState(prev => ({ step: prev.step - 1 }));
+//   increment = () => this.setState(prev => ({ count: prev.count + 1 }));
+//   decrement = () => this.setState(prev => ({ count: prev.count - 1 }));
 
 //   render() {
 //     return (
@@ -87,11 +76,6 @@ Counter.displayName = 'Counter';
 //         <h1>{this.state.count}</h1>
 //         <button onClick={this.increment}>+</button>
 //         <button onClick={this.decrement}>-</button>
-//         <div>
-//           <h2>Current step: {this.state.step}</h2>
-//           <button onClick={this.incrementStep}>Step +</button>
-//           <button onClick={this.decrementStep}>Step -</button>
-//         </div>
 //       </div>
 //     );
 //   }
