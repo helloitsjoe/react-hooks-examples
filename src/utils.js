@@ -8,6 +8,16 @@ export const fetchPhoto = query =>
     .then(() => fetch(`${BASE_URL}&query=${query}`))
     .then(res => res.json());
 
+export const getImgAttrs = imageData => {
+  if (!imageData) return { urls: {}, links: {} };
+
+  return {
+    alt: imageData.alt_description,
+    src: imageData.urls.small,
+    hotlink: imageData.links.html,
+  };
+};
+
 export const placeMap = {
   Paris: [
     'Ate a baguette',
