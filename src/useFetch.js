@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState, useReducer } from 'react';
-import { getRandom, fetchData, placeMap } from './utils';
+import { getRandom, fetchPhoto } from './utils';
 
 // Here are 3 different implementations of a custom hook that exposes the same API.
 // Swap them with the default export at the bottom of the file.
@@ -8,27 +8,28 @@ import { getRandom, fetchData, placeMap } from './utils';
 function useFetchWithState() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [data, setData] = useState([]);
-  const [activity, setActivity] = useState('');
-  const [place, setPlace] = useState(getRandom(Object.keys(placeMap)));
+  const [imageData, setImageData] = useState();
+  const [input, setInput] = useState('');
+  const [query, setQuery] = useState('');
+  const [requestCount, setRequestCount] = useState(0);
 
   // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
     let isCurrent = true;
-    
+
     setLoading(true);
     setError(false);
-    fetchData(place)
+    fetchPhoto(query)
       .then(data => {
         if (!isCurrent) return;
-      
+
         setLoading(false);
-        setActivity(getRandom(data));
-        setData(data);
+        setError(false);
+        setImageData(getRandom(data.results));
       })
       .catch(err => {
         if (!isCurrent) return;
-      
+
         setLoading(false);
         setError(true);
       });
@@ -38,13 +39,17 @@ function useFetchWithState() {
     // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
       isCurrent = false;
-    }
-  }, [place]);
+    };
+  }, [query, requestCount]);
 
-  const setRandomPlace = () => setPlace(getRandom(Object.keys(placeMap)));
-  const setRandomActivity = () => setActivity(getRandom(data, activity));
+  const handleChange = e => setInput(e.target.value);
+  const handleSubmit = e => {
+    e.preventDefault();
+    setRequestCount(c => c + 1);
+    setQuery(input);
+  };
 
-  return { loading, error, place, activity, setRandomActivity, setRandomPlace };
+  return { loading, error, imageData, input, query, handleChange, handleSubmit };
 }
 
 // Custom hook using useState to fetch data, storing all state in a single object.
@@ -57,99 +62,123 @@ function useFetchWithSingleState() {
   const initialState = {
     loading: false,
     error: false,
-    data: [],
-    activity: '',
-    place: getRandom(Object.keys(placeMap)),
+    imageData: null,
+    input: '',
+    query: '',
+    requestCount: 0,
   };
 
   const [state, setState] = useState(initialState);
-  const updateState = newState => setState(s => ({ ...s, ...newState }));
 
   useLayoutEffect(() => {
-    updateState({ loading: true, error: false });
-    fetchData(state.place)
+    setState({ ...state, loading: true, error: false });
+    fetchPhoto(state.query)
       .then(data => {
-        updateState({
+        const imageData = data.results;
+        console.log(`imageData:`, imageData);
+        setState({
+          ...state,
           loading: false,
-          activity: getRandom(data),
-          data,
+          error: false,
+          imageData,
         });
       })
-      .catch(err => updateState({ loading: false, error: true }));
-  }, [state.place]);
+      .catch(err => console.error(err) || setState({ ...state, loading: false, error: true }));
+  }, [state.query, state.requestCount]);
 
-  const setRandomPlace = () =>
-    updateState({ place: getRandom(Object.keys(placeMap)) });
-  const setRandomActivity = () =>
-    updateState({ activity: getRandom(data, state.activity) });
+  const handleChange = e => setState({ ...state, input: e.target.value });
+  const handleSubmit = e => {
+    e.preventDefault();
+    setState(prev => ({ ...state, requestCount: prev.requestCount + 1, query: prev.input }));
+  };
 
-  const { data, ...rest } = state;
-  return { ...rest, setRandomActivity, setRandomPlace };
+  return { ...state, handleChange, handleSubmit };
 }
 
 // Custom hook using useReducer to fetch data
 function useFetchWithReducer() {
-  const initialState = {
-    loading: false,
-    error: false,
-    data: [],
-    activity: '',
-    place: getRandom(Object.keys(placeMap)),
-  };
-
-  const [state, dispatch] = useReducer((state, action) => {
-    switch (action.type) {
-      case 'FETCHING':
-        return {
-          ...state,
-          loading: true,
-          error: false,
-        };
-      case 'SUCCESS':
-        return {
-          ...state,
-          loading: false,
-          data: action.data,
-          activity: getRandom(action.data),
-        };
-      case 'ERROR':
-        return {
-          ...state,
-          loading: false,
-          error: true,
-        };
-      case 'NEW_ACTIVITY':
-        return {
-          ...state,
-          activity: getRandom(state.data, state.activity),
-        };
-      case 'NEW_PLACE':
-        return {
-          ...state,
-          place: getRandom(Object.keys(placeMap), state.place),
-        };
-      default:
-        return state;
+  const [fetchState, fetchDispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case 'FETCH':
+          return { ...state, loading: true, error: false };
+        case 'FETCH_SUCCESS':
+          const imageData = getRandom(action.payload);
+          console.log(`imageData:`, imageData);
+          return { ...state, loading: false, error: false, imageData };
+        case 'FETCH_FAIL':
+          return { ...state, loading: false, error: true };
+        default:
+          return state;
+      }
+    },
+    {
+      loading: true,
+      error: false,
+      imageData: null,
     }
-  }, initialState);
+  );
 
+  const [inputState, inputDispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case 'INPUT':
+          return { ...state, input: action.payload };
+        case 'QUERY':
+          return { ...state, query: state.input, requestCount: state.requestCount + 1 };
+        default:
+          return state;
+      }
+    },
+    {
+      input: '',
+      query: '',
+      requestCount: 0,
+    }
+  );
+
+  // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
-    dispatch({ type: 'FETCHING' });
-    fetchData(state.place)
-      .then(data => {
-        dispatch({ type: 'SUCCESS', data });
+    let isCurrent = true;
+    fetchDispatch({ type: 'FETCH' });
+    fetchPhoto(inputState.query)
+      .then(res => {
+        if (!isCurrent) return;
+        fetchDispatch({ type: 'FETCH_SUCCESS', payload: res.results });
       })
       .catch(err => {
-        dispatch({ type: 'ERROR' });
+        if (!isCurrent) return;
+        console.error(err);
+        fetchDispatch({ type: 'FETCH_FAIL' });
       });
-  }, [state.place]);
 
-  const setRandomPlace = () => dispatch({ type: 'NEW_PLACE' });
-  const setRandomActivity = () => dispatch({ type: 'NEW_ACTIVITY' });
-  const { data, ...rest } = state;
-  return { ...rest, setRandomActivity, setRandomPlace };
+    // This prevents setting state on an unmounted component. To see the failure,
+    // comment out this return function, then in the browser: open dev tools, fetch
+    // data and switch to another example (e.g. Clock) while the data is still loading.
+    return () => {
+      isCurrent = false;
+    };
+  }, [inputState.query, inputState.requestCount]);
+
+  const handleChange = e => inputDispatch({ type: 'INPUT', payload: e.target.value });
+  const handleSubmit = e => {
+    e.preventDefault();
+    inputDispatch({ type: 'QUERY' });
+  };
+
+  const { loading, error, imageData } = fetchState;
+  const { input } = inputState;
+
+  return {
+    loading,
+    error,
+    imageData,
+    input,
+    handleChange,
+    handleSubmit,
+  };
 }
 
-export default useFetchWithState;
-// export default useFetchWithReducer;
+// export default useFetchWithState;
+export default useFetchWithReducer;
 // export default useFetchWithSingleState;

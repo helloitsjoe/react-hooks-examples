@@ -1,3 +1,13 @@
+const KEY = 'c0648e21b8bdf72b429ede45bb96e71d1788888bd05b8c41e5347f1396f4e0d9';
+const BASE_URL = `https://api.unsplash.com/search/photos?client_id=${KEY}`;
+
+const wait = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
+
+export const fetchPhoto = query =>
+  wait(1000)
+    .then(() => fetch(`${BASE_URL}&query=${query}`))
+    .then(res => res.json());
+
 export const placeMap = {
   Paris: [
     'Ate a baguette',
@@ -43,6 +53,6 @@ export function fetchData(place, ms = 500) {
 
 export function getRandom(items, currItem) {
   const item = items[Math.floor(Math.random() * items.length)];
-  if (item === currItem) return getRandom(items, currItem);
+  if (currItem && item === currItem) return getRandom(items, currItem);
   return item;
 }

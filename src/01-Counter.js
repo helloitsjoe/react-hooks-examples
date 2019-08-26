@@ -15,7 +15,7 @@ export default function Counter() {
   return (
     <div className="App">
       <h1>Current count:</h1>
-      <h1>{count}</h1>
+      <h1 data-testid="count">{count}</h1>
       <button onClick={decrement}>-</button>
       <button onClick={increment}>+</button>
       <div>

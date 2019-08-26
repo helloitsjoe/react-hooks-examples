@@ -1,4 +1,5 @@
-body, button {
+body,
+button {
   font-family: 'Montserrat';
 }
 
@@ -38,15 +39,29 @@ body, button {
   border: none;
 }
 
+.Vacation-input {
+  vertical-align: middle;
+  border: 1px solid gray;
+  border-radius: 3px;
+  line-height: 18px;
+  height: 20px;
+  padding: 3px;
+}
+
+img {
+  display: block;
+  margin: 20px auto;
+}
 
 button {
+  vertical-align: middle;
   border: none;
   border-radius: 2px;
   font-weight: bold;
   background-color: cornflowerblue;
   color: white;
   margin: 5px;
-  padding: 0 10px;
+  padding: 3px 10px;
   font-size: 18px;
 }
 
