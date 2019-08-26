@@ -5,7 +5,7 @@ import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
-  const { loading, error, imageData, input, handleChange, handleSubmit } = useFetch();
+  const { loading, error, imageData, input, query, handleChange, handleSubmit } = useFetch();
 
   if (loading || error) return <Fallback error={error} />;
 
@@ -14,6 +14,7 @@ export default function Vacation() {
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
+        {query && <h1>{query}!</h1>}
         {src ? (
           <a href={hotlink}>
             <img alt={alt} src={src} />
@@ -23,7 +24,7 @@ export default function Vacation() {
         )}
         <input
           className="Vacation-input"
-          placeholder="Where should we go?"
+          placeholder="Where should we go next?"
           onChange={handleChange}
           value={input}
         />

@@ -1,6 +1,8 @@
 import { useLayoutEffect, useState, useReducer } from 'react';
 import { getRandom, fetchPhoto } from './utils';
 
+const INITIAL_QUERY = 'Rome';
+
 // Here are 3 different implementations of a custom hook that exposes the same API.
 // Swap them with the default export at the bottom of the file.
 
@@ -10,25 +12,25 @@ function useFetchWithState() {
   const [error, setError] = useState(false);
   const [imageData, setImageData] = useState();
   const [input, setInput] = useState('');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(INITIAL_QUERY);
   const [requestCount, setRequestCount] = useState(0);
 
   // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
-    let isCurrent = true;
+    let didCancel = false;
 
     setLoading(true);
     setError(false);
     fetchPhoto(query)
       .then(data => {
-        if (!isCurrent) return;
+        if (didCancel) return;
 
         setLoading(false);
         setError(false);
         setImageData(getRandom(data.results));
       })
       .catch(err => {
-        if (!isCurrent) return;
+        if (didCancel) return;
 
         setLoading(false);
         setError(true);
@@ -38,7 +40,7 @@ function useFetchWithState() {
     // comment out this return function, then in the browser: open dev tools, fetch
     // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
-      isCurrent = false;
+      didCancel = true;
     };
   }, [query, requestCount]);
 
@@ -64,7 +66,7 @@ function useFetchWithSingleState() {
     error: false,
     imageData: null,
     input: '',
-    query: '',
+    query: INITIAL_QUERY,
     requestCount: 0,
   };
 
@@ -97,7 +99,7 @@ function useFetchWithSingleState() {
 
 // Custom hook using useReducer to fetch data
 function useFetchWithReducer() {
-  const [fetchState, fetchDispatch] = useReducer(
+  const [state, dispatch] = useReducer(
     (state, action) => {
       switch (action.type) {
         case 'FETCH':
@@ -108,20 +110,6 @@ function useFetchWithReducer() {
           return { ...state, loading: false, error: false, imageData };
         case 'FETCH_FAIL':
           return { ...state, loading: false, error: true };
-        default:
-          return state;
-      }
-    },
-    {
-      loading: true,
-      error: false,
-      imageData: null,
-    }
-  );
-
-  const [inputState, inputDispatch] = useReducer(
-    (state, action) => {
-      switch (action.type) {
         case 'INPUT':
           return { ...state, input: action.payload };
         case 'QUERY':
@@ -131,49 +119,55 @@ function useFetchWithReducer() {
       }
     },
     {
+      loading: true,
+      error: false,
+      imageData: null,
       input: '',
-      query: '',
+      query: INITIAL_QUERY,
       requestCount: 0,
     }
   );
 
+  const { loading, error, imageData, input, query, requestCount } = state;
+
   // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
-    let isCurrent = true;
-    fetchDispatch({ type: 'FETCH' });
-    fetchPhoto(inputState.query)
+    let didCancel = false;
+
+    dispatch({ type: 'FETCH' });
+    fetchPhoto(query)
       .then(res => {
-        if (!isCurrent) return;
-        fetchDispatch({ type: 'FETCH_SUCCESS', payload: res.results });
+        if (didCancel) return;
+
+        dispatch({ type: 'FETCH_SUCCESS', payload: res.results });
       })
       .catch(err => {
-        if (!isCurrent) return;
+        if (didCancel) return;
+
         console.error(err);
-        fetchDispatch({ type: 'FETCH_FAIL' });
+        dispatch({ type: 'FETCH_FAIL' });
       });
 
     // This prevents setting state on an unmounted component. To see the failure,
     // comment out this return function, then in the browser: open dev tools, fetch
     // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
-      isCurrent = false;
+      didCancel = true;
     };
-  }, [inputState.query, inputState.requestCount]);
+  }, [query, requestCount]);
 
-  const handleChange = e => inputDispatch({ type: 'INPUT', payload: e.target.value });
+  const handleChange = e => dispatch({ type: 'INPUT', payload: e.target.value });
   const handleSubmit = e => {
     e.preventDefault();
-    inputDispatch({ type: 'QUERY' });
+    dispatch({ type: 'QUERY' });
   };
-
-  const { loading, error, imageData } = fetchState;
-  const { input } = inputState;
 
   return {
     loading,
     error,
     imageData,
     input,
+    query,
     handleChange,
     handleSubmit,
   };
