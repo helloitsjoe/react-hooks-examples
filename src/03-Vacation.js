@@ -1,9 +1,17 @@
 import React, { useRef, useState, useEffect, useLayoutEffect, useReducer } from 'react';
 import useFetch from './useFetch';
-import { fetchPhoto, getRandom, getImgAttrs } from './utils';
+import { fetchImage, getRandom, getImgAttrs } from './utils';
 import './App.css';
 
 // const { loading, error, imageData, input, handleChange, handleSubmit } = useFetch();
+
+// 1. Set up state
+// 2. Fetch on mount
+// 3. Fetch on update
+// 4. Clean up before unmount
+// 5. Move into custom hook
+// 6. Refactor to useReducer
+// 7. Back to Counter, show useCallback, useMemo, useRef
 
 // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
@@ -22,7 +30,7 @@ export default function Vacation() {
             <img alt={alt} src={src} />
           </a>
         ) : (
-          <h2>Where would you like to go?</h2>
+          <h2>We should to go Rome...</h2>
         )}
         <input
           className="Vacation-input"

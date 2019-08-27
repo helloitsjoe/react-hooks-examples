@@ -4,6 +4,7 @@ import './App.css';
 // 1. setInterval on mount
 // 2. return clearInterval
 // 3. Add pause
+// 4. Show flow diagram
 
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 function MountedClock() {

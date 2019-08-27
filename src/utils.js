@@ -3,7 +3,7 @@ const BASE_URL = `https://api.unsplash.com/search/photos?client_id=${KEY}`;
 
 const wait = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const fetchPhoto = query =>
+export const fetchImage = query =>
   wait(1000)
     .then(() => fetch(`${BASE_URL}&query=${query}`))
     .then(res => res.json());
