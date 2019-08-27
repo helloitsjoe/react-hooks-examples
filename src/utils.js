@@ -9,7 +9,7 @@ export const fetchPhoto = query =>
     .then(res => res.json());
 
 export const getImgAttrs = imageData => {
-  if (!imageData) return { urls: {}, links: {} };
+  if (!imageData) return { src: '', hotlink: '', alt: '' };
 
   return {
     alt: imageData.alt_description,
