@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useReducer } from 'react';
 import useFetch from './useFetch';
-import { fetchPhoto, getRandom, getImgAttrs } from './utils';
+import { fetchImage, getRandom, getImgAttrs } from './utils';
 import './App.css';
 
 // // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
@@ -61,7 +61,7 @@ Vacation.displayName = 'Vacation';
 
 //   fetch = query => {
 //     this.setState({ loading: true, error: false });
-//     fetchPhoto(query)
+//     fetchImage(query)
 //       .then(data => {
 //         this.setState({
 //           loading: false,

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState, useReducer } from 'react';
-import { getRandom, fetchPhoto } from './utils';
+import { getRandom, fetchImage } from './utils';
 
 const INITIAL_QUERY = 'Rome';
 
@@ -21,7 +21,7 @@ function useFetchWithState() {
 
     setLoading(true);
     setError(false);
-    fetchPhoto(query)
+    fetchImage(query)
       .then(data => {
         if (didCancel) return;
 
@@ -74,7 +74,7 @@ function useFetchWithSingleState() {
 
   useLayoutEffect(() => {
     setState({ ...state, loading: true, error: false });
-    fetchPhoto(state.query)
+    fetchImage(state.query)
       .then(data => {
         const imageData = data.results;
         console.log(`imageData:`, imageData);
@@ -135,7 +135,7 @@ function useFetchWithReducer() {
     let didCancel = false;
 
     dispatch({ type: 'FETCH' });
-    fetchPhoto(query)
+    fetchImage(query)
       .then(res => {
         if (didCancel) return;
 
