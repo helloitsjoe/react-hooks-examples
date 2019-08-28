@@ -4,10 +4,7 @@ import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 export default function Counter() {
-  const [count, setCount] = useState(0);
-
-  const increment = () => setCount(c => c + 1);
-  const decrement = () => setCount(c => c - 1);
+  let count, increment, decrement;
 
   return (
     <div className="App">

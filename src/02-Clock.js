@@ -10,24 +10,7 @@ import './App.css';
 
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 function MountedClock() {
-  const [count, setCount] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    console.log(`in useEffect`);
-    const interval = setInterval(() => {
-      setCount(c => c + 1);
-    }, 500);
-
-    if (paused) {
-      clearInterval(interval);
-    }
-
-    return () => {
-      console.log(`cleaning up...`);
-      clearInterval(interval);
-    };
-  }, [paused]);
+  let count, paused, setPaused, setCount;
 
   return (
     <div className="App">
