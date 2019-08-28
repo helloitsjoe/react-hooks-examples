@@ -40,7 +40,14 @@ function useFetchWithState() {
     // comment out this return function, then in the browser: open dev tools, fetch
     // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
+<<<<<<< HEAD
       didCancel = true;
+=======
+      // This prevents setting state on an unmounted component. To see it in action, comment 
+      // out this return function, then in the browser fetch data and switch to another example 
+      // (e.g. Clock) while the data is still loading - you should see an error in the console.
+      isCurrent = false;
+>>>>>>> add comment for isCurrent
     };
   }, [query, requestCount]);
 
