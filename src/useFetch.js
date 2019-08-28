@@ -51,7 +51,15 @@ function useFetchWithState() {
     setQuery(input);
   };
 
-  return { loading, error, imageData, input, query, handleChange, handleSubmit };
+  return {
+    loading,
+    error,
+    imageData,
+    input,
+    query,
+    handleChange,
+    handleSubmit
+  };
 }
 
 // Custom hook using useState to fetch data, storing all state in a single object.
@@ -66,8 +74,13 @@ function useFetchWithSingleState() {
     error: false,
     imageData: null,
     input: '',
+<<<<<<< HEAD
     query: INITIAL_QUERY,
     requestCount: 0,
+=======
+    query: '',
+    requestCount: 0
+>>>>>>> pull master
   };
 
   const [state, setState] = useState(initialState);
@@ -82,16 +95,24 @@ function useFetchWithSingleState() {
           ...state,
           loading: false,
           error: false,
-          imageData,
+          imageData
         });
       })
-      .catch(err => console.error(err) || setState({ ...state, loading: false, error: true }));
+      .catch(
+        err =>
+          console.error(err) ||
+          setState({ ...state, loading: false, error: true })
+      );
   }, [state.query, state.requestCount]);
 
   const handleChange = e => setState({ ...state, input: e.target.value });
   const handleSubmit = e => {
     e.preventDefault();
-    setState(prev => ({ ...state, requestCount: prev.requestCount + 1, query: prev.input }));
+    setState(prev => ({
+      ...state,
+      requestCount: prev.requestCount + 1,
+      query: prev.input
+    }));
   };
 
   return { ...state, handleChange, handleSubmit };
@@ -113,7 +134,11 @@ function useFetchWithReducer() {
         case 'INPUT':
           return { ...state, input: action.payload };
         case 'QUERY':
-          return { ...state, query: state.input, requestCount: state.requestCount + 1 };
+          return {
+            ...state,
+            query: state.input,
+            requestCount: state.requestCount + 1
+          };
         default:
           return state;
       }
@@ -169,7 +194,7 @@ function useFetchWithReducer() {
     input,
     query,
     handleChange,
-    handleSubmit,
+    handleSubmit
   };
 }
 
