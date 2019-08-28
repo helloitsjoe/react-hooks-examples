@@ -13,10 +13,15 @@ const INITIAL_QUERY = 'Rome';
 // 6. Refactor to useReducer
 // 7. Back to Counter, show useCallback, useMemo, useRef
 
-// HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
-export default function Vacation() {
-  let loading, error, imageData, input, query, handleSubmit, handleChange;
-
+export default function Vacation({
+  loading,
+  error,
+  imageData,
+  input,
+  query,
+  handleSubmit,
+  handleChange,
+}) {
   if (loading || error) return <Fallback error={error} />;
 
   const { alt, src, hotlink } = getImgAttrs(imageData);

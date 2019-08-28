@@ -8,10 +8,7 @@ import './App.css';
 // 5. Show logs
 // 6. Show flow diagram
 
-// HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
-function MountedClock() {
-  let count, paused, setPaused, setCount;
-
+function MountedClock({ count, paused, setPaused, setCount }) {
   return (
     <div className="App">
       <h2>Count:</h2>

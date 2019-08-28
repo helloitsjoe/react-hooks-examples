@@ -2,10 +2,13 @@ import React, { useState, useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 
-// HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
-export default function Counter() {
-  let count, increment, decrement;
+// 1. No `this`
+// 2. useState returns [value, setter], takes initial value
+// 3. hooks are (essentially) registered in an array structure,
+//    length/order of hooks needs to be consistent across renders
+//    so, no hooks in loops/conditionals
 
+export default function Counter({ count, increment, decrement }) {
   return (
     <div className="App">
       <h1>Current count:</h1>
@@ -17,6 +20,31 @@ export default function Counter() {
 }
 
 Counter.displayName = 'Counter';
+
+////////////////////////////////////////////
+// CLASS-BASED IMPLEMENTATION
+
+// export default class Counter extends React.Component {
+//   static displayName = 'Counter';
+
+//   state = {
+//     count: 0,
+//   };
+
+//   increment = () => this.setState(prev => ({ count: prev.count + 1 }));
+//   decrement = () => this.setState(prev => ({ count: prev.count - 1 }));
+
+//   render() {
+//     return (
+//       <div className="App">
+//         <h1>Current count:</h1>
+//         <h1>{this.state.count}</h1>
+//         <button onClick={this.increment}>+</button>
+//         <button onClick={this.decrement}>-</button>
+//       </div>
+//     );
+//   }
+// }
 
 ////////////////////////////////////////////
 // NAIVE `useState` HOOK IMPLEMENTATION
@@ -52,28 +80,3 @@ Counter.displayName = 'Counter';
 // }
 
 // render();
-
-////////////////////////////////////////////
-// CLASS-BASED IMPLEMENTATION
-
-// export default class Counter extends React.Component {
-//   static displayName = 'Counter';
-
-//   state = {
-//     count: 0,
-//   };
-
-//   increment = () => this.setState(prev => ({ count: prev.count + 1 }));
-//   decrement = () => this.setState(prev => ({ count: prev.count - 1 }));
-
-//   render() {
-//     return (
-//       <div className="App">
-//         <h1>Current count:</h1>
-//         <h1>{this.state.count}</h1>
-//         <button onClick={this.increment}>+</button>
-//         <button onClick={this.decrement}>-</button>
-//       </div>
-//     );
-//   }
-// }
