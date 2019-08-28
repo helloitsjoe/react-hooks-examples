@@ -131,7 +131,8 @@ function useFetchWithReducer() {
         case 'QUERY':
           return {
             ...state,
-            query: state.input
+            query: state.input,
+            requestCount: state.requestCount + 1
           };
         default:
           return state;
@@ -142,11 +143,12 @@ function useFetchWithReducer() {
       error: false,
       imageData: null,
       input: '',
-      query: INITIAL_QUERY
+      query: INITIAL_QUERY,
+      requestCount: 0
     }
   );
 
-  const { loading, error, imageData, input, query } = state;
+  const { loading, error, imageData, input, query, requestCount } = state;
 
   // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
@@ -172,7 +174,7 @@ function useFetchWithReducer() {
     return () => {
       didCancel = true;
     };
-  }, [query]);
+  }, [query, requestCount]);
 
   const handleChange = e =>
     dispatch({ type: 'INPUT', payload: e.target.value });
