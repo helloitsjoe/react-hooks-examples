@@ -51,7 +51,15 @@ function useFetchWithState() {
     setQuery(input);
   };
 
-  return { loading, error, imageData, input, query, handleChange, handleSubmit };
+  return {
+    loading,
+    error,
+    imageData,
+    input,
+    query,
+    handleChange,
+    handleSubmit
+  };
 }
 
 // Custom hook using useState to fetch data, storing all state in a single object.
@@ -67,7 +75,7 @@ function useFetchWithSingleState() {
     imageData: null,
     input: '',
     query: INITIAL_QUERY,
-    requestCount: 0,
+    requestCount: 0
   };
 
   const [state, setState] = useState(initialState);
@@ -82,16 +90,24 @@ function useFetchWithSingleState() {
           ...state,
           loading: false,
           error: false,
-          imageData,
+          imageData
         });
       })
-      .catch(err => console.error(err) || setState({ ...state, loading: false, error: true }));
+      .catch(
+        err =>
+          console.error(err) ||
+          setState({ ...state, loading: false, error: true })
+      );
   }, [state.query, state.requestCount]);
 
   const handleChange = e => setState({ ...state, input: e.target.value });
   const handleSubmit = e => {
     e.preventDefault();
-    setState(prev => ({ ...state, requestCount: prev.requestCount + 1, query: prev.input }));
+    setState(prev => ({
+      ...state,
+      requestCount: prev.requestCount + 1,
+      query: prev.input
+    }));
   };
 
   return { ...state, handleChange, handleSubmit };
@@ -123,7 +139,7 @@ function useFetchWithReducer() {
       error: false,
       imageData: null,
       input: '',
-      query: INITIAL_QUERY,
+      query: INITIAL_QUERY
     }
   );
 
@@ -155,7 +171,8 @@ function useFetchWithReducer() {
     };
   }, [query]);
 
-  const handleChange = e => dispatch({ type: 'INPUT', payload: e.target.value });
+  const handleChange = e =>
+    dispatch({ type: 'INPUT', payload: e.target.value });
   const handleSubmit = e => {
     e.preventDefault();
     dispatch({ type: 'QUERY' });
@@ -168,7 +185,7 @@ function useFetchWithReducer() {
     input,
     query,
     handleChange,
-    handleSubmit,
+    handleSubmit
   };
 }
 
