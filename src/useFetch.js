@@ -146,7 +146,7 @@ function useFetchWithReducer() {
     }
   );
 
-  const { loading, error, imageData, input, query, requestCount } = state;
+  const { loading, error, imageData, input, query } = state;
 
   // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
@@ -172,7 +172,7 @@ function useFetchWithReducer() {
     return () => {
       didCancel = true;
     };
-  }, [query, requestCount]);
+  }, [query]);
 
   const handleChange = e =>
     dispatch({ type: 'INPUT', payload: e.target.value });
