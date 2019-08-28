@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState, useReducer } from 'react';
-import { getRandom, fetchPhoto } from './utils';
+import { getRandom, fetchImage } from './utils';
 
 const INITIAL_QUERY = 'Rome';
 
@@ -21,7 +21,7 @@ function useFetchWithState() {
 
     setLoading(true);
     setError(false);
-    fetchPhoto(query)
+    fetchImage(query)
       .then(data => {
         if (didCancel) return;
 
@@ -74,7 +74,7 @@ function useFetchWithSingleState() {
 
   useLayoutEffect(() => {
     setState({ ...state, loading: true, error: false });
-    fetchPhoto(state.query)
+    fetchImage(state.query)
       .then(data => {
         const imageData = data.results;
         console.log(`imageData:`, imageData);
@@ -113,7 +113,7 @@ function useFetchWithReducer() {
         case 'INPUT':
           return { ...state, input: action.payload };
         case 'QUERY':
-          return { ...state, query: state.input, requestCount: state.requestCount + 1 };
+          return { ...state, query: state.input };
         default:
           return state;
       }
@@ -124,18 +124,17 @@ function useFetchWithReducer() {
       imageData: null,
       input: '',
       query: INITIAL_QUERY,
-      requestCount: 0,
     }
   );
 
-  const { loading, error, imageData, input, query, requestCount } = state;
+  const { loading, error, imageData, input, query } = state;
 
   // useEffect flashes before data fetching, useLayoutEffect runs before browser paint
   useLayoutEffect(() => {
     let didCancel = false;
 
     dispatch({ type: 'FETCH' });
-    fetchPhoto(query)
+    fetchImage(query)
       .then(res => {
         if (didCancel) return;
 
@@ -154,7 +153,7 @@ function useFetchWithReducer() {
     return () => {
       didCancel = true;
     };
-  }, [query, requestCount]);
+  }, [query]);
 
   const handleChange = e => dispatch({ type: 'INPUT', payload: e.target.value });
   const handleSubmit = e => {

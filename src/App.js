@@ -21,7 +21,6 @@ function Button({ app }) {
 }
 
 export default function App() {
-  // const [current, setCurrent] = useState({ app: Counter });
   const [current, setCurrent] = useState({ app: Counter });
 
   return (

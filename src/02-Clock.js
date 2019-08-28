@@ -4,11 +4,30 @@ import './App.css';
 // 1. setInterval on mount
 // 2. return clearInterval
 // 3. Add pause
-// 4. Show flow diagram
+// 4. Compare to lifecycle methods
+// 5. Show logs
+// 6. Show flow diagram
 
 // HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 function MountedClock() {
-  let count, paused, setPaused, setCount;
+  const [count, setCount] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    console.log(`in useEffect`);
+    const interval = setInterval(() => {
+      setCount(c => c + 1);
+    }, 500);
+
+    if (paused) {
+      clearInterval(interval);
+    }
+
+    return () => {
+      console.log(`cleaning up...`);
+      clearInterval(interval);
+    };
+  }, [paused]);
 
   return (
     <div className="App">
