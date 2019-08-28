@@ -40,14 +40,7 @@ function useFetchWithState() {
     // comment out this return function, then in the browser: open dev tools, fetch
     // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
-<<<<<<< HEAD
       didCancel = true;
-=======
-      // This prevents setting state on an unmounted component. To see it in action, comment 
-      // out this return function, then in the browser fetch data and switch to another example 
-      // (e.g. Clock) while the data is still loading - you should see an error in the console.
-      isCurrent = false;
->>>>>>> add comment for isCurrent
     };
   }, [query, requestCount]);
 
@@ -81,13 +74,8 @@ function useFetchWithSingleState() {
     error: false,
     imageData: null,
     input: '',
-<<<<<<< HEAD
     query: INITIAL_QUERY,
-    requestCount: 0,
-=======
-    query: '',
     requestCount: 0
->>>>>>> pull master
   };
 
   const [state, setState] = useState(initialState);
@@ -143,8 +131,7 @@ function useFetchWithReducer() {
         case 'QUERY':
           return {
             ...state,
-            query: state.input,
-            requestCount: state.requestCount + 1
+            query: state.input
           };
         default:
           return state;
@@ -155,8 +142,7 @@ function useFetchWithReducer() {
       error: false,
       imageData: null,
       input: '',
-      query: INITIAL_QUERY,
-      requestCount: 0,
+      query: INITIAL_QUERY
     }
   );
 
@@ -188,7 +174,8 @@ function useFetchWithReducer() {
     };
   }, [query, requestCount]);
 
-  const handleChange = e => dispatch({ type: 'INPUT', payload: e.target.value });
+  const handleChange = e =>
+    dispatch({ type: 'INPUT', payload: e.target.value });
   const handleSubmit = e => {
     e.preventDefault();
     dispatch({ type: 'QUERY' });
