@@ -1,6 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import render from './naive-useState';
 
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const REAL_RENDER = true;
+
+if (REAL_RENDER) {
+  ReactDOM.render(<App />, document.getElementById('root'));
+} else {
+  render();
+}
