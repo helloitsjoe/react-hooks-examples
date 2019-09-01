@@ -7,9 +7,9 @@ import './App.css';
 export default function Vacation() {
   const { loading, error, imageData, input, query, handleChange, handleSubmit } = useFetch();
 
-  if (loading || error) return <Fallback error={error} />;
-
   const { alt, src, hotlink } = getImgAttrs(imageData);
+
+  if (loading || error) return <Fallback error={error} />;
 
   return (
     <div className="App">
@@ -20,7 +20,7 @@ export default function Vacation() {
             <img alt={alt} src={src} />
           </a>
         ) : (
-          <h2>Where would you like to go?</h2>
+          <h2>We should go to Rome...</h2>
         )}
         <input
           className="Vacation-input"
