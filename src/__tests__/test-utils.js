@@ -1,33 +1,31 @@
-import React from 'react';
-
 export function getProps(spy) {
   const lastCallIndex = spy.mock.calls.length - 1;
   const [props] = spy.mock.calls[lastCallIndex];
   return props;
 }
 
-export function componentSpy(pathFromTestsFolder, namedOrDefault = 'default') {
-  const module = jest.requireActual(pathFromTestsFolder);
+export function moduleSpy(pathFromTestFile) {
+  const module = jest.requireActual(pathFromTestFile);
 
-  // Coerce to array
-  const moduleExports = [].concat(namedOrDefault);
+  // Create a new exports object (including default) that spies on all exports
+  const moduleExportSpies = Object.entries(module).reduce(
+    (exportSpies, [exportName, exportValue]) => {
+      // Create a spy for each export, transfering static properties
+      const exportSpyWithStatics = Object.entries(exportValue).reduce(
+        (exportSpy, [staticKey, staticValue]) => {
+          exportSpy[staticKey] = staticValue;
+          return exportSpy;
+        },
+        jest.fn().mockImplementation(exportValue)
+      );
 
-  const mockComponents = moduleExports.reduce((mocks, exportName) => {
-    const RealComponent = module[exportName];
-    const MockComponent = jest.fn(props => <RealComponent {...props} />);
+      // eslint-disable-next-line no-param-reassign
+      exportSpies[exportName] = exportSpyWithStatics;
 
-    // Add statics to MockComponent
-    Object.entries(RealComponent).forEach(([key, value]) => {
-      MockComponent[key] = value;
-    });
+      return exportSpies;
+    },
+    {}
+  );
 
-    // eslint-disable-next-line no-param-reassign
-    mocks[exportName] = MockComponent;
-
-    return mocks;
-  }, {});
-
-  // TODO: Handle named and default in the same file
-  const isNamed = namedOrDefault !== 'default';
-  return isNamed ? { ...module, ...mockComponents } : mockComponents.default;
+  return { __esModule: true, ...moduleExportSpies };
 }

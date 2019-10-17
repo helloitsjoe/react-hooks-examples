@@ -1,69 +1,90 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import ComponentOne, { ComponentTwo, ComponentThree } from '../ShallowTest';
+import { render, cleanup } from '@testing-library/react';
+import DefaultComponent, {
+  ComponentTwo,
+  ComponentThree,
+  nonComponentFunc
+} from '../ShallowTest';
 import { getProps } from './test-utils';
 
-// Default export
-jest.mock('../ShallowTest', () => global.componentSpy('../ShallowTest'));
+jest.mock('../ShallowTest', () => global.moduleSpy('../ShallowTest'));
 
-// // Single named
-// jest.mock('../ShallowTest', () => global.componentSpy('../ShallowTest', 'ComponentTwo'));
+const TestDefault = () => (
+  <div>
+    <DefaultComponent greeting="Hey" />
+  </div>
+);
+const TestNamedSingle = () => (
+  <div>
+    <ComponentTwo greeting="Hello" />
+  </div>
+);
+const TestNamedMultiple = () => (
+  <div>
+    <ComponentTwo greeting="Hello" />
+    <ComponentThree greeting="Hi" />
+  </div>
+);
 
-// // Multiple named
-// jest.mock('../ShallowTest', () =>
-//   global.componentSpy('../ShallowTest', ['ComponentTwo', 'ComponentThree'])
-// );
+const TestDefaultAndNamed = () => (
+  <div>
+    <DefaultComponent greeting="Hey" />
+    <ComponentTwo greeting="Hello" />
+    <ComponentThree greeting="Hi" />
+  </div>
+);
 
-describe('Testing componentSpy', () => {
-  const TestDefault = () => (
-    <div>
-      <ComponentOne greeting="Hey" />
-    </div>
-  );
-  const TestNamedSingle = () => (
-    <div>
-      <ComponentTwo greeting="Hello" />
-    </div>
-  );
-  const TestNamedMultiple = () => (
-    <div>
-      <ComponentTwo greeting="Hello" />
-      <ComponentThree greeting="Hi" />
-    </div>
-  );
+afterEach(cleanup);
 
-  const TestDefaultAndNamed = () => (
-    <div>
-      <ComponentOne greeting="Hey" />
-      <ComponentTwo greeting="Hello" />
-    </div>
-  );
-
-  fit('default export', () => {
+describe('Named and default variations', () => {
+  it('default export', () => {
     const { queryByText } = render(<TestDefault />);
     expect(queryByText('Hey')).toBeTruthy();
-    expect(getProps(ComponentOne).greeting).toBe('Hey');
+    expect(getProps(DefaultComponent).greeting).toBe('Hey');
   });
 
   it('single named export', () => {
     const { queryByText } = render(<TestNamedSingle />);
     expect(queryByText('Hello')).toBeTruthy();
-    expect(getProps(ComponentOne).greeting).toBe('Hello');
+    expect(getProps(ComponentTwo).greeting).toBe('Hello');
   });
 
   it('multiple named exports', () => {
     const { queryByText } = render(<TestNamedMultiple />);
     expect(queryByText('Hello')).toBeTruthy();
-    expect(queryByText('Hi')).toBeTruthy();
-    expect(getProps(ComponentOne).greeting).toBe('Hello');
-    expect(getProps(ComponentTwo).greeting).toBe('Hi');
+    expect(queryByText('Hi, you!')).toBeTruthy();
+    expect(getProps(ComponentTwo).greeting).toBe('Hello');
+    expect(getProps(ComponentThree).greeting).toBe('Hi');
   });
 
   it('default and named exports', () => {
     const { queryByText } = render(<TestDefaultAndNamed />);
     expect(queryByText('Hey')).toBeTruthy();
     expect(queryByText('Hello')).toBeTruthy();
-    expect(getProps(ComponentThree).greeting).toBe('Hey');
-    expect(getProps(ComponentOne).greeting).toBe('Hello');
+    expect(getProps(DefaultComponent).greeting).toBe('Hey');
+    expect(getProps(ComponentTwo).greeting).toBe('Hello');
+    expect(getProps(ComponentThree).greeting).toBe('Hi');
+  });
+});
+
+describe('Spies have all functionality', () => {
+  it('includes static properties', () => {
+    const { queryByText } = render(<TestDefault />);
+    expect(queryByText('Hey')).toBeTruthy();
+    expect(DefaultComponent.someStatic).toBe('test');
+  });
+
+  it('works with multiple props', () => {
+    const { queryByText } = render(
+      <ComponentThree greeting="Hullo" name="Joe" />
+    );
+    expect(queryByText('Hullo, Joe!')).toBeTruthy();
+    expect(getProps(ComponentThree).greeting).toBe('Hullo');
+    expect(getProps(ComponentThree).name).toBe('Joe');
+  });
+
+  it('also mocks non-component exports', () => {
+    expect(nonComponentFunc('Oh hay')).toBe('Oh hay I work too');
+    expect(nonComponentFunc).toBeCalledWith('Oh hay');
   });
 });
