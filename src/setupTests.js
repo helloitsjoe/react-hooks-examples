@@ -1,6 +1,6 @@
-import { moduleSpy } from './__tests__/test-utils';
+// import { moduleSpy } from './__tests__/test-utils';
 
-global.moduleSpy = moduleSpy;
+// global.moduleSpy = moduleSpy;
 
 const silenceActWarnings = log => (message, ...args) => {
   if (/act(...)/.test(message)) return;

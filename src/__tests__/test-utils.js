@@ -4,28 +4,29 @@ export function getProps(spy) {
   return props;
 }
 
-export function moduleSpy(pathFromTestFile) {
-  const module = jest.requireActual(pathFromTestFile);
+// Note: this is not actually needed. See ShallowTest.jest.js
+// export function moduleSpy(pathFromTestFile) {
+//   const module = jest.requireActual(pathFromTestFile);
 
-  // Create a new exports object (including default) that spies on all exports
-  const moduleExportSpies = Object.entries(module).reduce(
-    (exportSpies, [exportName, exportValue]) => {
-      // Create a spy for each export, transfering static properties
-      const exportSpyWithStatics = Object.entries(exportValue).reduce(
-        (exportSpy, [staticKey, staticValue]) => {
-          exportSpy[staticKey] = staticValue;
-          return exportSpy;
-        },
-        jest.fn().mockImplementation(exportValue)
-      );
+//   // Create a new exports object (including default) that spies on all exports
+//   const moduleExportSpies = Object.entries(module).reduce(
+//     (exportSpies, [exportName, exportValue]) => {
+//       // Create a spy for each export, transfering static properties
+//       const exportSpyWithStatics = Object.entries(exportValue).reduce(
+//         (exportSpy, [staticKey, staticValue]) => {
+//           exportSpy[staticKey] = staticValue;
+//           return exportSpy;
+//         },
+//         jest.fn().mockImplementation(exportValue)
+//       );
 
-      // eslint-disable-next-line no-param-reassign
-      exportSpies[exportName] = exportSpyWithStatics;
+//       // eslint-disable-next-line no-param-reassign
+//       exportSpies[exportName] = exportSpyWithStatics;
 
-      return exportSpies;
-    },
-    {}
-  );
+//       return exportSpies;
+//     },
+//     {}
+//   );
 
-  return { __esModule: true, ...moduleExportSpies };
-}
+//   return { __esModule: true, ...moduleExportSpies };
+// }
