@@ -4,29 +4,30 @@ export function getProps(spy) {
   return props;
 }
 
+function isClass(maybe) {
+  return typeof maybe === 'function' && maybe.toString().includes('class');
+}
+
 // Note: this is not actually needed. See ShallowTest.jest.js
-// export function moduleSpy(pathFromTestFile) {
-//   const module = jest.requireActual(pathFromTestFile);
+export function moduleSpy(pathFromTestFile) {
+  const module = jest.requireActual(pathFromTestFile);
 
-//   // Create a new exports object (including default) that spies on all exports
-//   const moduleExportSpies = Object.entries(module).reduce(
-//     (exportSpies, [exportName, exportValue]) => {
-//       // Create a spy for each export, transfering static properties
-//       const exportSpyWithStatics = Object.entries(exportValue).reduce(
-//         (exportSpy, [staticKey, staticValue]) => {
-//           exportSpy[staticKey] = staticValue;
-//           return exportSpy;
-//         },
-//         jest.fn().mockImplementation(exportValue)
-//       );
+  // Create a new exports object (including default) that spies on all exports
+  return Object.entries(module).reduce(
+    (spies, [realName, realValue]) => {
+      // Create a spy for each export, transfering static properties
+      const spyWithStatics = Object.entries(realValue).reduce(
+        (spy, [staticKey, staticValue]) => {
+          spy[staticKey] = staticValue;
+          return spy;
+        },
+        // TODO: How to spyOn classes?
+        jest.fn(realValue)
+      );
 
-//       // eslint-disable-next-line no-param-reassign
-//       exportSpies[exportName] = exportSpyWithStatics;
-
-//       return exportSpies;
-//     },
-//     {}
-//   );
-
-//   return { __esModule: true, ...moduleExportSpies };
-// }
+      spies[realName] = spyWithStatics;
+      return spies;
+    },
+    { __esModule: true }
+  );
+}

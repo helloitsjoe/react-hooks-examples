@@ -1,18 +1,26 @@
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
-import DefaultComponent, { ComponentTwo, ComponentThree, nonComponentFunc } from '../ShallowTest';
+import DefaultComponent, {
+  ComponentTwo,
+  ComponentThree,
+  ClassComponent,
+  nonComponentFunc
+} from '../ShallowTest';
 import { getProps } from './test-utils';
 
-jest.mock('../ShallowTest', () => {
-  const realExports = jest.requireActual('../ShallowTest');
+jest.mock('../ShallowTest', () => global.moduleSpy('../ShallowTest'));
 
-  return {
-    __esModule: true,
-    default: jest.fn(realExports.default),
-    ComponentTwo: jest.fn(realExports.ComponentTwo),
-    ComponentThree: jest.fn(realExports.ComponentThree),
-  };
-});
+// jest.mock('../ShallowTest', () => {
+//   const realExports = jest.requireActual('../ShallowTest');
+
+//   return {
+//     __esModule: true,
+//     default: jest.fn(realExports.default),
+//     ComponentTwo: jest.fn(realExports.ComponentTwo),
+//     ComponentThree: jest.fn(realExports.ComponentThree),
+//     nonComponentFunc: jest.fn(realExports.nonComponentFunc)
+//   };
+// });
 
 const TestDefault = () => (
   <div>
@@ -36,6 +44,11 @@ const TestDefaultAndNamed = () => (
     <DefaultComponent greeting="Hey" />
     <ComponentTwo greeting="Hello" />
     <ComponentThree greeting="Hi" />
+  </div>
+);
+const TestClass = () => (
+  <div>
+    <ClassComponent greeting="Aloha" />
   </div>
 );
 
@@ -73,21 +86,29 @@ describe('Named and default variations', () => {
 });
 
 describe('Spies have all functionality', () => {
-  xit('includes static properties', () => {
+  it('includes static properties', () => {
     const { queryByText } = render(<TestDefault />);
     expect(queryByText('Hey')).toBeTruthy();
     expect(DefaultComponent.someStatic).toBe('test');
   });
 
   it('works with multiple props', () => {
-    const { queryByText } = render(<ComponentThree greeting="Hullo" name="Joe" />);
+    const { queryByText } = render(
+      <ComponentThree greeting="Hullo" name="Joe" />
+    );
     expect(queryByText('Hullo, Joe!')).toBeTruthy();
     expect(getProps(ComponentThree).greeting).toBe('Hullo');
     expect(getProps(ComponentThree).name).toBe('Joe');
   });
 
-  xit('also mocks non-component exports', () => {
+  it('also mocks non-component exports', () => {
     expect(nonComponentFunc('Oh hay')).toBe('Oh hay I work too');
     expect(nonComponentFunc).toBeCalledWith('Oh hay');
+  });
+
+  it('works with classes', () => {
+    const { queryByText } = render(<TestClass />);
+    expect(queryByText('Aloha')).toBeTruthy();
+    expect(getProps(ClassComponent).greeting).toBe('Hey');
   });
 });

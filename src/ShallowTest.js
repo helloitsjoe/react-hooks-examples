@@ -17,6 +17,12 @@ export function ComponentThree({ greeting, name = 'you' }) {
   );
 }
 
+export class ClassComponent {
+  render() {
+    return <div>{this.props.greeting}</div>;
+  }
+}
+
 export function nonComponentFunc(greeting = '') {
   return `${greeting} I work too`.trim();
 }
