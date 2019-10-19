@@ -1,6 +1,17 @@
-export function getProps(spy) {
-  const lastCallIndex = spy.mock.calls.length - 1;
-  const [props] = spy.mock.calls[lastCallIndex];
+export function getProps(spy, selector = 0) {
+  // const lastCallIndex = spy.mock.calls.length - 1;
+  if (typeof selector === 'number') {
+    const [props] = spy.mock.calls[selector];
+    return props;
+  }
+
+  const call = spy.mock.calls.find(call => {
+    const [key, value] = Object.entries(selector)[0];
+    return call[0][key] === value;
+  });
+  if (!call) return;
+
+  const [props] = call;
   return props;
 }
 
@@ -8,7 +19,6 @@ function isClass(maybe) {
   return typeof maybe === 'function' && maybe.toString().includes('class');
 }
 
-// Note: this is not actually needed. See ShallowTest.jest.js
 export function moduleSpy(pathFromTestFile) {
   const module = jest.requireActual(pathFromTestFile);
 
