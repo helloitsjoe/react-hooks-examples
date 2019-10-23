@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 export default function DefaultComponent({ greeting }) {
   return <div>{greeting}</div>;
@@ -17,7 +17,7 @@ export function ComponentThree({ greeting, name = 'you' }) {
   );
 }
 
-export class ClassComponent {
+export class ClassComponent extends Component {
   render() {
     return <div>{this.props.greeting}</div>;
   }

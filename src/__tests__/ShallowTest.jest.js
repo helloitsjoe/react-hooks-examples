@@ -134,9 +134,9 @@ describe('Spies have all functionality', () => {
     expect(nonComponentFunc).toBeCalledWith('Oh hay');
   });
 
-  xit('works with classes', () => {
+  it('works with classes', () => {
     const { queryByText } = render(<TestClass />);
     expect(queryByText('Aloha')).toBeTruthy();
-    expect(getProps(ClassComponent).greeting).toBe('Hey');
+    expect(getProps(ClassComponent).greeting).toBe('Aloha');
   });
 });

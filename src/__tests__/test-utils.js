@@ -15,8 +15,8 @@ export function getProps(spy, selector = 0) {
   return props;
 }
 
-function isClass(maybe) {
-  return typeof maybe === 'function' && maybe.toString().includes('class');
+function isClass(Component) {
+  return !!new Component({}).isReactComponent;
 }
 
 export function moduleSpy(pathFromTestFile) {
@@ -31,10 +31,9 @@ export function moduleSpy(pathFromTestFile) {
           spy[staticKey] = staticValue;
           return spy;
         },
-        // TODO: How to spyOn classes?
-        jest.fn(realValue)
+        // TODO: This works to spy on class components, but feels janky. Is there a better way?
+        isClass(realValue) ? jest.fn(() => new realValue()) : jest.fn(realValue)
       );
-
       spies[realName] = spyWithStatics;
       return spies;
     },
