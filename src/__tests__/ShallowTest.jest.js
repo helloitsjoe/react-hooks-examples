@@ -77,7 +77,7 @@ describe('getProps', () => {
 
   it('finds by testid', () => {
     const { queryByText } = render(<TestDouble />);
-    const firstProps = getProps(DefaultComponent, { 'data-testid': 'first' });
+    const firstProps = getProps(DefaultComponent, '[data-testid="first"]');
     const secondProps = getProps(DefaultComponent, { 'data-testid': 'second' });
     expect(firstProps.greeting).toBe('Hey');
     expect(secondProps.greeting).toBe('Hiya');

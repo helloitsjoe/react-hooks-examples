@@ -5,13 +5,17 @@ export function getProps(spy, selector = 0) {
     return props;
   }
 
-  const call = spy.mock.calls.find(call => {
-    const [key, value] = Object.entries(selector)[0];
+  const matchingCall = spy.mock.calls.find(call => {
+    const [key, value] =
+      typeof selector === 'string'
+        ? selector.replace(/[[\]"]/g, '').split('=')
+        : Object.entries(selector)[0];
     return call[0][key] === value;
   });
-  if (!call) return;
 
-  const [props] = call;
+  if (!matchingCall) return;
+
+  const [props] = matchingCall;
   return props;
 }
 
