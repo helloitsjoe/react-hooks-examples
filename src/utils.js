@@ -1,21 +1,36 @@
-const KEY = 'c0648e21b8bdf72b429ede45bb96e71d1788888bd05b8c41e5347f1396f4e0d9';
-const BASE_URL = `https://api.unsplash.com/search/photos?client_id=${KEY}`;
+// const KEY = 'c0648e21b8bdf72b429ede45bb96e71d1788888bd05b8c41e5347f1396f4e0d9';
+// const BASE_URL = `https://api.unsplash.com/search/photos?client_id=${KEY}`;
 
 const wait = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const fetchImage = query =>
-  wait(1000)
-    .then(() => fetch(`${BASE_URL}&query=${query}`))
-    .then(res => res.json());
+  wait(1000).then(() => {
+    // console.log(`imageData:`, imageData[query.toLowerCase()]);
+    return imageData[query.toLowerCase()];
+  });
 
-export const getImgAttrs = imageData => {
-  if (!imageData) return { src: '', hotlink: '', alt: '' };
+// .then(() => fetch(`${BASE_URL}&query=${query}`))
+// .then(res => res.json());
 
-  return {
-    alt: imageData.alt_description,
-    src: imageData.urls.small,
-    hotlink: imageData.links.html,
-  };
+// export const getImgAttrs = imageData => {
+//   if (!imageData) return { src: '', hotlink: '', alt: '' };
+
+//   return {
+//     alt: imageData.alt_description,
+//     src: imageData.urls.small,
+//     hotlink: imageData.links.html,
+//   };
+// };
+
+export const imageData = {
+  rome: [
+    {
+      // src: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b',
+      src:
+        'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=80',
+      hotlink: 'https://unsplash.com/photos/s87bBFZviAU',
+    },
+  ],
 };
 
 export const placeMap = {
@@ -62,7 +77,9 @@ export function fetchData(place, ms = 500) {
 }
 
 export function getRandom(items, currItem) {
+  console.log(`items:`, items);
   const item = items[Math.floor(Math.random() * items.length)];
+  return item;
   if (currItem && item === currItem) return getRandom(items, currItem);
   return item;
 }

@@ -58,7 +58,7 @@ function useFetchWithState() {
     input,
     query,
     handleChange,
-    handleSubmit
+    handleSubmit,
   };
 }
 
@@ -75,7 +75,7 @@ function useFetchWithSingleState() {
     imageData: null,
     input: '',
     query: INITIAL_QUERY,
-    requestCount: 0
+    requestCount: 0,
   };
 
   const [state, setState] = useState(initialState);
@@ -90,14 +90,10 @@ function useFetchWithSingleState() {
           ...state,
           loading: false,
           error: false,
-          imageData
+          imageData,
         });
       })
-      .catch(
-        err =>
-          console.error(err) ||
-          setState({ ...state, loading: false, error: true })
-      );
+      .catch(err => console.error(err) || setState({ ...state, loading: false, error: true }));
   }, [state.query, state.requestCount]);
 
   const handleChange = e => setState({ ...state, input: e.target.value });
@@ -106,7 +102,7 @@ function useFetchWithSingleState() {
     setState(prev => ({
       ...state,
       requestCount: prev.requestCount + 1,
-      query: prev.input
+      query: prev.input,
     }));
   };
 
@@ -132,7 +128,7 @@ function useFetchWithReducer() {
           return {
             ...state,
             query: state.input,
-            requestCount: state.requestCount + 1
+            requestCount: state.requestCount + 1,
           };
         default:
           return state;
@@ -144,7 +140,7 @@ function useFetchWithReducer() {
       imageData: null,
       input: '',
       query: INITIAL_QUERY,
-      requestCount: 0
+      requestCount: 0,
     }
   );
 
@@ -159,7 +155,7 @@ function useFetchWithReducer() {
       .then(res => {
         if (didCancel) return;
 
-        dispatch({ type: 'FETCH_SUCCESS', payload: res.results });
+        dispatch({ type: 'FETCH_SUCCESS', payload: res });
       })
       .catch(err => {
         if (didCancel) return;
@@ -176,8 +172,7 @@ function useFetchWithReducer() {
     };
   }, [query, requestCount]);
 
-  const handleChange = e =>
-    dispatch({ type: 'INPUT', payload: e.target.value });
+  const handleChange = e => dispatch({ type: 'INPUT', payload: e.target.value });
   const handleSubmit = e => {
     e.preventDefault();
     dispatch({ type: 'QUERY' });
@@ -190,7 +185,7 @@ function useFetchWithReducer() {
     input,
     query,
     handleChange,
-    handleSubmit
+    handleSubmit,
   };
 }
 

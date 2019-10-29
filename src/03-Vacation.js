@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useLayoutEffect, useReducer } from 'react';
 import useFetch from './useFetch';
-import { fetchImage, getRandom, getImgAttrs } from './utils';
+import { fetchImage, getRandom } from './utils';
 import './App.css';
 
 // // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
   const { loading, error, imageData, input, query, handleChange, handleSubmit } = useFetch();
 
-  const { alt, src, hotlink } = getImgAttrs(imageData);
-
   if (loading || error) return <Fallback error={error} />;
+
+  const { src, hotlink } = imageData;
 
   return (
     <div className="App">
@@ -17,11 +17,17 @@ export default function Vacation() {
         {query && <h1>{query}!</h1>}
         {src ? (
           <a href={hotlink}>
-            <img alt={alt} src={src} />
+            <img alt={query} src={src} />
           </a>
         ) : (
           <h2>We should go to Rome...</h2>
         )}
+        {/* <select onChange={handleChange}>
+          <option>Rome</option>
+          <option>Paris</option>
+          <option>London</option>
+          <option>Boston</option>
+        </select> */}
         <input
           className="Vacation-input"
           placeholder="Where should we go next?"
