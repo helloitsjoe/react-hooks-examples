@@ -5,7 +5,15 @@ import './App.css';
 
 // // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
-  const { loading, error, imageData, input, query, handleChange, handleSubmit } = useFetch();
+  const {
+    loading,
+    error,
+    imageData,
+    input,
+    query,
+    handleChange,
+    handleSubmit
+  } = useFetch();
 
   if (loading || error) return <Fallback error={error} />;
 

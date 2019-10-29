@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-// HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
-function MountedClock() {
+function Clock() {
   const [count, setCount] = useState(0);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
+    if (paused) return;
+
     // This setInterval gets cleaned up and recreated every time useEffect runs
     // (console log `interval` to see the ID changing on every update)
     const interval = setInterval(() => {
       setCount(e => e + 1);
-    }, 250);
-
-    if (paused) {
-      clearInterval(interval);
-    }
+    }, 100);
 
     // The function returned from `useEffect` gets called before unmount
     // (in fact, it gets called every time useEffect is called, which you
@@ -35,7 +32,9 @@ function MountedClock() {
   return (
     <div className="App">
       <h2>Count:</h2>
-      <h1>{count}</h1>
+      <div className="Clock-container">
+        <h1>{(count / 10).toFixed(1)}</h1>
+      </div>
       <button onClick={() => setPaused(!paused)}>
         {paused ? 'Resume' : 'Pause'}
       </button>

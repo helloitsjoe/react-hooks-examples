@@ -39,6 +39,12 @@ button {
   border: none;
 }
 
+.Clock-container {
+  text-align: left;
+  width: 3em;
+  margin: auto;
+}
+
 .Vacation-input {
   vertical-align: middle;
   border: 1px solid gray;
@@ -47,6 +53,10 @@ button {
   height: 20px;
   padding: 3px;
   width: 200px;
+}
+
+.error {
+  color: red;
 }
 
 img {
