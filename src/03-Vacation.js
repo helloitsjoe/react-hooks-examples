@@ -3,7 +3,7 @@ import useFetch from './useFetch';
 import { fetchImage, getRandom, getImgAttrs } from './utils';
 import './App.css';
 
-// const { loading, error, imageData, input, query, handleChange, handleSubmit } = useCustomFetch();
+// const { loading, error, imageData, query, handleChange } = useCustomFetch();
 
 // useEffect and data fetching
 // 1. Set up state
@@ -16,35 +16,25 @@ import './App.css';
 
 const INITIAL_QUERY = 'Rome';
 
-export default function Vacation({
-  loading,
-  error,
-  imageData = {},
-  input,
-  query,
-  handleSubmit,
-  handleChange,
-}) {
+export default function Vacation({ loading, error, imageData = {}, query, handleChange }) {
   if (loading || error) return <Fallback error={error} />;
 
   const { alt, src, hotlink } = imageData;
 
   return (
     <div className="App">
-      <form onSubmit={handleSubmit}>
-        {query && <h1>{query}!</h1>}
-        <a href={hotlink}>
-          <img alt={alt} src={src} />
-        </a>
-        <select onChange={handleChange}>
-          <option>Where do you want to go?</option>
-          <option>Boston</option>
-          <option>Rome</option>
-          <option>Paris</option>
-          <option>Tokyo</option>
-          <option>London</option>
-        </select>
-      </form>
+      {query && <h1>{query}!</h1>}
+      <a href={hotlink}>
+        <img alt={alt} src={src} />
+      </a>
+      <select onChange={handleChange}>
+        <option>Where do you want to go?</option>
+        <option>Boston</option>
+        <option>Rome</option>
+        <option>Paris</option>
+        <option>Tokyo</option>
+        <option>London</option>
+      </select>
     </div>
   );
 }
@@ -85,13 +75,12 @@ function useFetchWithReducer() {
       loading: true,
       error: false,
       imageData: null,
-      input: '',
       query: INITIAL_QUERY,
       requestCount: 0,
     }
   );
 
-  const { loading, error, imageData, input, query, requestCount } = state;
+  const { loading, error, imageData, query, requestCount } = state;
 
   useEffect(() => {
     let didCancel = false;
@@ -124,7 +113,6 @@ function useFetchWithReducer() {
     loading,
     error,
     imageData,
-    input,
     query,
     handleChange,
   };
