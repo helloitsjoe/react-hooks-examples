@@ -1,14 +1,6 @@
 const wait = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 export const getRandom = arr => arr[Math.floor(Math.random() * arr.length)];
 
-const getAttrs = data => {
-  return data.results.map(ea => ({
-    alt: ea.alt_description,
-    src: ea.urls.small,
-    hotlink: ea.links.html,
-  }));
-};
-
 export const fetchImage = query =>
   wait(1000).then(() => {
     return imageData[query.toLowerCase()];
