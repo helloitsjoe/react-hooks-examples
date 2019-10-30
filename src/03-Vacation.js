@@ -19,7 +19,7 @@ const INITIAL_QUERY = 'Rome';
 export default function Vacation({
   loading,
   error,
-  imageData,
+  imageData = {},
   input,
   query,
   handleSubmit,
@@ -27,26 +27,23 @@ export default function Vacation({
 }) {
   if (loading || error) return <Fallback error={error} />;
 
-  const { alt, src, hotlink } = getImgAttrs(imageData);
+  const { alt, src, hotlink } = imageData;
 
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
         {query && <h1>{query}!</h1>}
-        {src ? (
-          <a href={hotlink}>
-            <img alt={alt} src={src} />
-          </a>
-        ) : (
-          <h2>We should to go Rome...</h2>
-        )}
-        <input
-          className="Vacation-input"
-          placeholder="Where should we go next?"
-          onChange={handleChange}
-          value={input}
-        />
-        <button type="submit">Search</button>
+        <a href={hotlink}>
+          <img alt={alt} src={src} />
+        </a>
+        <select onChange={handleChange}>
+          <option>Where do you want to go?</option>
+          <option>Boston</option>
+          <option>Rome</option>
+          <option>Paris</option>
+          <option>Tokyo</option>
+          <option>London</option>
+        </select>
       </form>
     </div>
   );

@@ -6,14 +6,16 @@ import './App.css';
 // • Dependency array: a gate for restricting useEffect calls
 // • Replaces many lifecycle methods
 
-// 1. setInterval on mount
-// 2. return clearInterval
-// 3. Add pause
-// 4. Compare to lifecycle methods
-// 5. console.log in cleanup function
-// 6. Show flow diagram
+// 1. setInterval in render
+// 2. Move inside useEffect
+// 3. Add dependency array
+// 4. return clearInterval
+// 5. Add pause
+// 6. Compare to lifecycle methods
+// 7. console.log in cleanup function
+// 8. Show flow diagram
 
-export default function Clock({ count, setCount, paused, setPaused }) {
+export default function Clock({ count, paused, setPaused, setCount }) {
   return (
     <div className="App">
       <h2>Count:</h2>
