@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 
-// HOOKS-BASED IMPLEMENTATION - SEE CLASS BELOW FOR REFERENCE
 export default function Counter() {
   const [count, setCount] = useState(0);
 
