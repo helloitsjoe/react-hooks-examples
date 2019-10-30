@@ -67,7 +67,6 @@ function useFetchWithSingleState() {
     loading: true,
     error: false,
     imageData: null,
-    input: '',
     query: INITIAL_QUERY,
     requestCount: 0,
   };
@@ -127,13 +126,12 @@ function useFetchWithReducer() {
       loading: true,
       error: false,
       imageData: null,
-      input: '',
       query: INITIAL_QUERY,
       requestCount: 0,
     }
   );
 
-  const { loading, error, imageData, input, query, requestCount } = state;
+  const { loading, error, imageData, query, requestCount } = state;
 
   useLayoutEffect(() => {
     let didCancel = false;
@@ -166,7 +164,6 @@ function useFetchWithReducer() {
     loading,
     error,
     imageData,
-    input,
     query,
     handleChange,
   };
