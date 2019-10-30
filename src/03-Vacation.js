@@ -67,14 +67,16 @@ function useFetchWithReducer() {
           return { ...state, loading: true, error: false };
         case 'FETCH_SUCCESS':
           const imageData = getRandom(action.payload);
-          console.log(`imageData:`, imageData);
+          // console.log(`imageData:`, imageData);
           return { ...state, loading: false, error: false, imageData };
         case 'FETCH_FAIL':
           return { ...state, loading: false, error: true };
-        case 'INPUT':
-          return { ...state, input: action.payload };
-        case 'QUERY':
-          return { ...state, query: state.input };
+        case 'QUERY_CHANGE':
+          return {
+            ...state,
+            query: action.payload,
+            requestCount: state.requestCount + 1,
+          };
         default:
           return state;
       }
@@ -85,10 +87,11 @@ function useFetchWithReducer() {
       imageData: null,
       input: '',
       query: INITIAL_QUERY,
+      requestCount: 0,
     }
   );
 
-  const { loading, error, imageData, input, query } = state;
+  const { loading, error, imageData, input, query, requestCount } = state;
 
   useEffect(() => {
     let didCancel = false;
@@ -98,7 +101,7 @@ function useFetchWithReducer() {
       .then(res => {
         if (didCancel) return;
 
-        dispatch({ type: 'FETCH_SUCCESS', payload: res.results });
+        dispatch({ type: 'FETCH_SUCCESS', payload: res });
       })
       .catch(err => {
         if (didCancel) return;
@@ -107,16 +110,15 @@ function useFetchWithReducer() {
         dispatch({ type: 'FETCH_FAIL' });
       });
 
+    // This prevents setting state on an unmounted component. To see the failure,
+    // comment out this return function, then in the browser: open dev tools, fetch
+    // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
       didCancel = true;
     };
-  }, [query]);
+  }, [query, requestCount]);
 
-  const handleChange = e => dispatch({ type: 'INPUT', payload: e.target.value });
-  const handleSubmit = e => {
-    e.preventDefault();
-    dispatch({ type: 'QUERY' });
-  };
+  const handleChange = e => dispatch({ type: 'QUERY_CHANGE', payload: e.target.value });
 
   return {
     loading,
@@ -125,6 +127,5 @@ function useFetchWithReducer() {
     input,
     query,
     handleChange,
-    handleSubmit,
   };
 }
