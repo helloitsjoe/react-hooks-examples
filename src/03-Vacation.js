@@ -3,7 +3,6 @@ import useFetch from './useFetch';
 import { fetchImage, getRandom } from './utils';
 import './App.css';
 
-// // HOOKS-BASED IMPLEMENTATION, SEE CLASS BELOW FOR REFERENCE
 export default function Vacation() {
   const { loading, error, imageData, query, handleChange } = useFetch();
 
