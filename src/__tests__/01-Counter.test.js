@@ -13,18 +13,4 @@ describe('Counter', () => {
     fireEvent.click(getByText('-'));
     expect(getByTestId('count').textContent).toBe('0');
   });
-
-  it('increments/decrements step', () => {
-    const { getByText, getByTestId } = render(<Counter />);
-    const currentStep = getByText('Current step:', { exact: false });
-    expect(currentStep.textContent).toMatch('1');
-    fireEvent.click(getByText('Step +'));
-    expect(currentStep.textContent).toMatch('2');
-    fireEvent.click(getByText('+'));
-    expect(getByTestId('count').textContent).toBe('2');
-    fireEvent.click(getByText('Step -'));
-    expect(currentStep.textContent).toMatch('1');
-    fireEvent.click(getByText('+'));
-    expect(getByTestId('count').textContent).toBe('3');
-  });
 });

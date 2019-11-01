@@ -12,11 +12,10 @@ afterEach(cleanup);
 it('Loads vacation header defaulted to Rome', async () => {
   fetchImage.mockResolvedValue([]);
 
-  const { queryByText, findByTestId } = render(<App />);
+  const { queryByText, findByText } = render(<App />);
   expect(queryByText('Loading...')).toBeTruthy();
 
-  const title = await findByTestId('vacation-title');
-  expect(title.textContent).toMatch('Rome');
+  expect(findByText('Rome')).toBeTruthy();
 });
 
 it('displays error', async () => {
