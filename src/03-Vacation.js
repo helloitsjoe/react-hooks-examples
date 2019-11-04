@@ -16,8 +16,14 @@ import './App.css';
 
 const INITIAL_QUERY = 'Rome';
 
-export default function Vacation({ loading, error, imageData = {}, query, handleChange }) {
-  if (loading || error) return <Fallback error={error} />;
+export default function Vacation({
+  loading,
+  error,
+  imageData,
+  query,
+  handleChange
+}) {
+  if (loading || !imageData || error) return <Fallback error={error} />;
 
   const { alt, src, hotlink } = imageData;
 
@@ -44,7 +50,11 @@ Vacation.displayName = 'Vacation';
 const Fallback = ({ loading, error }) => {
   return (
     <div data-testid="fallback" className="App">
-      {error ? <h1 style={{ color: 'red' }}>Error! {error}</h1> : <h1>Loading...</h1>}
+      {error ? (
+        <h1 style={{ color: 'red' }}>Error! {error}</h1>
+      ) : (
+        <h1>Loading...</h1>
+      )}
     </div>
   );
 };
@@ -64,8 +74,7 @@ function useFetchWithReducer() {
         case 'QUERY_CHANGE':
           return {
             ...state,
-            query: action.payload,
-            requestCount: state.requestCount + 1,
+            query: action.payload
           };
         default:
           return state;
@@ -75,12 +84,11 @@ function useFetchWithReducer() {
       loading: true,
       error: false,
       imageData: null,
-      query: INITIAL_QUERY,
-      requestCount: 0,
+      query: INITIAL_QUERY
     }
   );
 
-  const { loading, error, imageData, query, requestCount } = state;
+  const { loading, error, imageData, query } = state;
 
   useEffect(() => {
     let didCancel = false;
@@ -105,15 +113,16 @@ function useFetchWithReducer() {
     return () => {
       didCancel = true;
     };
-  }, [query, requestCount]);
+  }, [query]);
 
-  const handleChange = e => dispatch({ type: 'QUERY_CHANGE', payload: e.target.value });
+  const handleChange = e =>
+    dispatch({ type: 'QUERY_CHANGE', payload: e.target.value });
 
   return {
     loading,
     error,
     imageData,
     query,
-    handleChange,
+    handleChange
   };
 }
