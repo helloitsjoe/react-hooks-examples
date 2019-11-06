@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useReducer } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import { getRandom, fetchImage } from './utils';
 
 const INITIAL_QUERY = 'Boston';
@@ -12,9 +12,8 @@ function useFetchWithState() {
   const [error, setError] = useState(false);
   const [imageData, setImageData] = useState();
   const [query, setQuery] = useState(INITIAL_QUERY);
-  const [requestCount, setRequestCount] = useState(0);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let didCancel = false;
 
     setLoading(true);
@@ -40,12 +39,9 @@ function useFetchWithState() {
     return () => {
       didCancel = true;
     };
-  }, [query, requestCount]);
+  }, [query]);
 
-  const handleChange = e => {
-    setRequestCount(c => c + 1);
-    setQuery(e.target.value);
-  };
+  const handleChange = e => setQuery(e.target.value);
 
   return {
     loading,
@@ -68,12 +64,11 @@ function useFetchWithSingleState() {
     error: false,
     imageData: null,
     query: INITIAL_QUERY,
-    requestCount: 0,
   };
 
   const [state, setState] = useState(initialState);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setState(s => ({ ...s, loading: true, error: false }));
     fetchImage(state.query)
       .then(data => {
@@ -84,7 +79,11 @@ function useFetchWithSingleState() {
           imageData: getRandom(data),
         }));
       })
-      .catch(err => console.error(err) || setState(s => ({ ...s, loading: false, error: true })));
+      .catch(
+        err =>
+          console.error(err) ||
+          setState(s => ({ ...s, loading: false, error: true }))
+      );
   }, [state.query]);
 
   const handleChange = e => {
@@ -92,7 +91,6 @@ function useFetchWithSingleState() {
     setState(s => ({
       ...s,
       query: value,
-      requestCount: s.requestCount + 1,
     }));
   };
 
@@ -108,16 +106,11 @@ function useFetchWithReducer() {
           return { ...state, loading: true, error: false };
         case 'FETCH_SUCCESS':
           const imageData = getRandom(action.payload);
-          // console.log(`imageData:`, imageData);
           return { ...state, loading: false, error: false, imageData };
         case 'FETCH_FAIL':
           return { ...state, loading: false, error: true };
         case 'QUERY_CHANGE':
-          return {
-            ...state,
-            query: action.payload,
-            requestCount: state.requestCount + 1,
-          };
+          return { ...state, query: action.payload };
         default:
           return state;
       }
@@ -127,13 +120,12 @@ function useFetchWithReducer() {
       error: false,
       imageData: null,
       query: INITIAL_QUERY,
-      requestCount: 0,
     }
   );
 
-  const { loading, error, imageData, query, requestCount } = state;
+  const { loading, error, imageData, query } = state;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let didCancel = false;
 
     dispatch({ type: 'FETCH' });
@@ -156,14 +148,15 @@ function useFetchWithReducer() {
     return () => {
       didCancel = true;
     };
-  }, [query, requestCount]);
+  }, [query]);
 
-  const handleChange = e => dispatch({ type: 'QUERY_CHANGE', payload: e.target.value });
+  const handleChange = e =>
+    dispatch({ type: 'QUERY_CHANGE', payload: e.target.value });
 
   return {
     loading,
-    error,
     imageData,
+    error,
     query,
     handleChange,
   };
