@@ -6,7 +6,7 @@ import './App.css';
 export default function Vacation() {
   const { loading, error, imageData, query, handleChange } = useFetch();
 
-  if (loading || error) return <Fallback error={error} />;
+  if (loading || !imageData || error) return <Fallback error={error} />;
 
   const { src, hotlink } = imageData;
 

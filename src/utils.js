@@ -1,5 +1,8 @@
 const wait = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
-export const getRandom = arr => arr[Math.floor(Math.random() * arr.length)];
+export const getRandom = arr => {
+  const index = Math.floor(Math.random() * arr.length);
+  return arr[index];
+};
 
 export const fetchImage = query =>
   wait(1000).then(() => {
@@ -125,7 +128,8 @@ const imageData = {
         'https://images.unsplash.com/photo-1431274172761-fca41d930114?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjg4MzkyfQ',
     },
     {
-      alt: 'bike leaning against handrail in front of concrete building at daytime',
+      alt:
+        'bike leaning against handrail in front of concrete building at daytime',
       hotlink: 'https://unsplash.com/photos/Hf4Ap1-ef40',
       src:
         'https://images.unsplash.com/photo-1471623320832-752e8bbf8413?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjg4MzkyfQ',
@@ -163,7 +167,8 @@ const imageData = {
         'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjg4MzkyfQ',
     },
     {
-      alt: 'red double-decker bus passing Palace of Westminster, London during daytime',
+      alt:
+        'red double-decker bus passing Palace of Westminster, London during daytime',
       hotlink: 'https://unsplash.com/photos/tZDtyUrYrFU',
       src:
         'https://images.unsplash.com/photo-1488747279002-c8523379faaa?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjg4MzkyfQ',
