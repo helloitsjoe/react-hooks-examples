@@ -12,7 +12,8 @@ import './App.css';
 // 4. Clean up before unmount
 // 5. Move into custom hook
 // 6. Refactor to useReducer
-// 7. Back to Counter, show useRef, useCallback, useMemo
+// 7. API, useEffect is declarative, useReducer
+// 8. Back to Counter, show useRef, useCallback, useMemo
 
 const INITIAL_QUERY = 'Rome';
 
@@ -59,7 +60,7 @@ const Fallback = ({ loading, error }) => {
   );
 };
 
-function useFetchWithReducer() {
+function useFetchReducer() {
   const [state, dispatch] = useReducer(
     (state, action) => {
       switch (action.type) {
@@ -91,38 +92,29 @@ function useFetchWithReducer() {
   const { loading, error, imageData, query } = state;
 
   useEffect(() => {
-    let didCancel = false;
+    let isMounted = true;
 
     dispatch({ type: 'FETCH' });
     fetchImage(query)
       .then(res => {
-        if (didCancel) return;
+        if (!isMounted) return;
 
         dispatch({ type: 'FETCH_SUCCESS', payload: res });
       })
       .catch(err => {
-        if (didCancel) return;
+        if (!isMounted) return;
 
         console.error(err);
         dispatch({ type: 'FETCH_FAIL' });
       });
 
-    // This prevents setting state on an unmounted component. To see the failure,
-    // comment out this return function, then in the browser: open dev tools, fetch
-    // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
-      didCancel = true;
+      isMounted = false;
     };
   }, [query]);
 
   const handleChange = e =>
     dispatch({ type: 'QUERY_CHANGE', payload: e.target.value });
 
-  return {
-    loading,
-    error,
-    imageData,
-    query,
-    handleChange
-  };
+  return { loading, error, imageData, query, handleChange };
 }
