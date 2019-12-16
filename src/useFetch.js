@@ -14,20 +14,20 @@ function useFetchWithState() {
   const [query, setQuery] = useState(INITIAL_QUERY);
 
   useEffect(() => {
-    let didCancel = false;
+    let isMounted = true;
 
     setLoading(true);
     setError(false);
     fetchImage(query)
       .then(data => {
-        if (didCancel) return;
+        if (!isMounted) return;
 
         setImageData(getRandom(data));
         setLoading(false);
         setError(false);
       })
       .catch(err => {
-        if (didCancel) return;
+        if (!isMounted) return;
 
         setLoading(false);
         setError(true);
@@ -37,7 +37,7 @@ function useFetchWithState() {
     // comment out this return function, then in the browser: open dev tools, fetch
     // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
-      didCancel = true;
+      isMounted = false;
     };
   }, [query]);
 
@@ -126,17 +126,17 @@ function useFetchWithReducer() {
   const { loading, error, imageData, query } = state;
 
   useEffect(() => {
-    let didCancel = false;
+    let isMounted = true;
 
     dispatch({ type: 'FETCH' });
     fetchImage(query)
       .then(res => {
-        if (didCancel) return;
+        if (!isMounted) return;
 
         dispatch({ type: 'FETCH_SUCCESS', payload: res });
       })
       .catch(err => {
-        if (didCancel) return;
+        if (!isMounted) return;
 
         console.error(err);
         dispatch({ type: 'FETCH_FAIL' });
@@ -146,7 +146,7 @@ function useFetchWithReducer() {
     // comment out this return function, then in the browser: open dev tools, fetch
     // data and switch to another example (e.g. Clock) while the data is still loading.
     return () => {
-      didCancel = true;
+      isMounted = false;
     };
   }, [query]);
 
